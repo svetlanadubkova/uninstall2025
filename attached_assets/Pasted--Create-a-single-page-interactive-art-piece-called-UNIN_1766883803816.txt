@@ -1,0 +1,304 @@
+ Create a single-page interactive art piece called "UNINSTALL 2025.EXE" - a meditative year-end experience styled as a Windows software uninstallation wizard.
+
+  AESTHETIC (CRITICAL - MUST MATCH EXACTLY):
+  - Font: Times New Roman, italic, serif
+  - Colors: Pure white background (#FFFFFF), bright red text (#FF0000)
+  - Borders: 1px solid red lines
+  - Style: Minimalist, glitchy, internet-art, early web nostalgia
+  - Animations: Subtle glitch effects (text shifts, hue rotations, scanlines), slow marquees, fade-ins
+  - NO gradients, NO shadows (except intentional glitch text-shadow), NO modern UI elements
+  - Inspiration: Brutalist web design, memento mori aesthetic, performance art
+
+  TONE (CRITICAL):
+  - all lowercase except for EMPHASIS and when things get MANIC
+  - vulnerable, earnest, honest, romantic, a little unhinged
+  - not inspirational - REAL. performance art. screaming truth into the void with hope.
+  - emoticons okay :-)
+  - capital letters for intensity: AFFIRM!!!!! LFG!!!
+  - sometimes keyboard smashing when emotions overflow
+  - like a friend texting you at 2am with realizations
+  - "God's Not Finished" always capitalized like this when used
+
+  CORE EXPERIENCE - SCREEN FLOW:
+
+  1. INTRO SCREEN (full-screen, centered)
+     - Large italic text: "UNINSTALL 2025.EXE"
+     - Subtitle: "are you ready to let go?"
+     - Bottom: "click anywhere to begin"
+     - Subtle glitch animation on text
+
+  2. PREPARING SCREEN
+     - "preparing to uninstall 2025.exe..."
+     - Scrolling marquee of the year's chaos: "heartbreak waiting growing breaking learning loving losing finding planting seeds trusting timing crying laughing wanting hoping doubting believing..."
+     - Progress bar (red fill, white background, 1px red border)
+     - Auto-advances after 3 seconds
+
+  3. USER IDENTIFICATION
+     - "enter your name to continue:"
+     - Simple text input (red border, white bg, red text)
+     - [continue] button
+     - Validates name exists before advancing
+
+  4. UNINSTALLATION WIZARD - Sequential screens (click to advance):
+     - Progress indicator at top ("step 3 of 14")
+     - Main message/lesson in center
+     - Loading bar or status text
+     - [next] or [continue] button at bottom
+
+     SCREEN CONTENT (raw, unfiltered tone):
+
+     Screen A: "removing temporary files..."
+     → "temporary files served their purpose in this version. sometimes you delete to make space for an upgrade. sometimes you delete to make space for something new. but holding on to them slows the system and processes down. clearing space for what's next..."
+
+     Screen B: "analyzing installed programs..."
+     → "you learned how humans work better this year. including yourself. especially yourself. that alone is worth any heartbreak. you're not the same person who started this year. AFFIRM!!!!!"
+
+     Screen C: "scanning for corrupted narratives..."
+     → "you know yourself best. trust your pattern recognition. you're allowed to trust yourself. you're allowed to believe what you see. TRUST YOURSELF."
+
+     Screen D: "ERROR: cannot delete hope.exe - file is protected"
+     → Fake Windows error dialog box style
+     → "some things refuse to be uninstalled. God's Not Finished. there are so many tomorrows you haven't seen yet. so many people you haven't met. so many versions of yourself you haven't become."
+
+     Screen E: "archiving lessons learned..."
+     → "THE DAY YOU PLANT THE SEED IS NOT THE DAY YOU EAT THE FRUIT. don't forget everything you planted this year. you watered things in the dark. you trusted when you couldn't see. the garden remembers. the universe is keeping score. even the smallest seeds bloom one day. your seeds are still growing even if you can't see them yet KEEP PLANTING KEEP TRUSTING KEEP GOINGkjhsdfgjkhsdfg :-)"
+
+     Screen F: "removing broken shortcuts..."
+     → "heartbreak redirected you. rejection protected you. stop trying to get back on the path. there is no path. you can always change direction. you're not stuck - you're just scared. you're not a tree - MOVE!!!! pivot. start over. for the love of God, don't be a coward. there are no shortcuts, darling."
+
+     Screen G: "WARNING: patience.exe is still processing..."
+     → "not everything blooms on your timeline and that's okay. you're allowed to want things before they arrive. desire is life-affirming. wanting is not weakness. you don't have to be patient perfectly. you just have to keep going. God's Not Finished :-)"
+
+     Screen H: "scanning for corrupted files..."
+     → "you speedran through love and heartbreak and growth and that's GOOD actually. you didn't run. you stayed present, open, vulnerable, and earnest even when it hurt. tomorrow is a beautiful thing. LFG :-)"
+
+     Screen I: "defragmenting memories..."
+     → "you're not who you were in january. you're not who you'll be in december 2026. you're always becoming. you're always shedding skin. you're a different person every 4 weeks and that's the whole point. shedding is never comfortable. growth is supposed to feel like this."
+
+     **Screen J: INTERACTIVE DESKTOP SCREEN** (SPECIAL - see detailed specs below)
+
+     Screen K: "compressing 2025..."
+     → Choice moment: "save these lessons?"
+     → Three buttons: [yes] [always] [already saved in my bones]
+     → Any choice shows: "good. you'll need them later."
+
+     Screen L: "ERROR: cannot install cynicism.exe - blocked by hope.dll"
+     → Fake error dialog
+     → "you could close off. you could decide love isn't worth it. you could build walls. but you won't. because you're not a coward. LFG :-)"
+
+     Screen M: Multiple ERROR messages cascade (auto-advance through each):
+     → "ERROR: cannot delete love.exe - access denied"
+     → "ERROR: cannot remove hope.dll - system file protected by God's Not Finished"
+     → "ERROR: cannot uninstall faith.sys - required by future.exe"
+     → "ERROR: cannot remove growth.dll - permanently installed"
+     → Final: "some things aren't meant to be uninstalled :-)"
+
+  5. TRANSITION SCREEN
+     - "2025.exe successfully archived."
+     - "preparing to install 2026.exe..."
+     - "do your part. release the rest."
+     - Brief pause (2 seconds)
+
+  6. INSTALLING 2026 - Sequential auto-advancing loading bars:
+     - "installing hope.exe ███████░░░ 73%"
+     - "installing clarity.exe ████████░ 89%"
+     - "installing bravery.exe ██████████ 100%"
+     - "installing trust.exe ██████████ 100%"
+     - "installing play.exe ██████████ 100%"
+     - "installing levity.exe ██████████ 100%"
+     - "installing badassery.exe ██████████ 100%"
+     - "installing patience.exe ███░░░░░░░ 31% (this one takes time)"
+     - "installing faith.exe ██████████ ∞"
+
+  7. INTENTION SETTING (optional input)
+     - "what do you want to feel in 2026?"
+     - Text area (optional - can skip)
+     - Small text: "your answer is saved in your heart, not our database :-)"
+     - [skip] and [continue] buttons
+
+  8. FINAL SCREEN
+     - "installation complete."
+     - "2026.exe is ready."
+     - "ready to resume game?"
+     - "press any key to begin :-)"
+     - Stays on this screen (or very slow fade, then hold)
+
+  ---
+
+  ## INTERACTIVE DESKTOP SCREEN (Screen J) - DETAILED SPECS:
+
+  This is a full-screen desktop environment that appears as one step in the wizard.
+
+  **LAYOUT:**
+  - Full white background (desktop)
+  - Top bar: "my computer - 2025 cleanup" in red text
+  - File icons scattered across desktop (8-10 files total)
+  - Trash bin icon in bottom-right corner
+  - Instruction text at top: "drag unwanted files to trash. let go of what doesn't serve you."
+  - Small [continue] button appears in bottom-left after interaction
+
+  **FILE ICONS** (simple red text labels with icon symbol):
+  Each file appears as: 📄 filename.ext
+
+  BAD FILES (should be deletable):
+  - cynicism.exe
+  - bitterness.dll
+  - self-doubt.txt
+  - old-pain.zip
+  - resentment.sys
+  - fear-of-failure.exe
+  - cowardice.exe
+
+  GOOD FILES (should trigger errors when dragged to trash):
+  - hope.exe
+  - love.dll
+  - trust.sys
+  - patience.sys
+  - faith.exe
+  - bravery.exe
+
+  **TRASH BIN:**
+  - Bottom right corner
+  - Icon: 🗑️ "trash"
+  - Red outline, slightly larger
+  - Highlights when file is dragged over it
+
+  **DRAG & DROP BEHAVIOR:**
+
+  1. **User drags BAD file to trash:**
+     - File animates into trash bin
+     - Confirmation message appears briefly: "cynicism.exe deleted successfully :-)"
+     - File disappears from desktop
+
+  2. **User drags GOOD file to trash:**
+     - When dropped in trash, error dialog pops up (Windows-style)
+     - ERROR messages:
+       - hope.exe → "ERROR: cannot delete hope.exe - file is protected by God's Not Finished.dll"
+       - love.dll → "ERROR: cannot delete love.dll - this file is required by your operating system"
+       - trust.sys → "ERROR: access denied - trust.sys is a critical system file"
+       - patience.sys → "ERROR: cannot delete patience.sys - still processing future operations"
+       - faith.exe → "ERROR: cannot remove faith.exe - needed for future operations"
+       - bravery.exe → "ERROR: cannot delete bravery.exe - you're going to need this"
+     - File bounces back to original position
+     - Glitch effect on bounce
+
+  3. **AUTO-DELETION after user interaction:**
+     - After user manually drags 2-3 files, remaining BAD files start auto-deleting
+     - Files animate to trash one by one (1 second intervals)
+     - Messages appear: "removing resentment.sys...", "deleting fear-of-failure.exe..."
+     - GOOD files remain on desktop and start glowing/pulsing slightly
+
+  4. **[continue] button:**
+     - Appears in bottom-left after all bad files are deleted
+     - Text: "all corrupted files removed. continue →"
+     - Click advances to next wizard screen
+
+  **VISUAL STYLE:**
+  - Files arranged somewhat randomly (not grid)
+  - Simple file icon aesthetic (📄 + filename in red text)
+  - Dragging shows ghost/outline of file
+  - Trash bin has hover state
+  - Error dialogs: white box, red border, red text, [ok] button
+  - Minimal, clean, matches overall aesthetic
+
+  **INTERACTION NOTES:**
+  - Desktop is draggable (files can be moved)
+  - Files can be rearranged but only trash bin is functional
+  - Touch-friendly for mobile (tap file, tap trash)
+  - Smooth animations (0.3s ease)
+  - Glitch effects on errors
+
+  ---
+
+  INTERACTIVE ELEMENTS (throughout all screens):
+  - Click to advance through wizard (no auto-advance except where noted)
+  - Hover effects on buttons (glitch animation)
+  - Numbers and progress bars should have glitch effect on hover
+  - Hidden terminal easter egg (press ` backtick key anywhere)
+
+  HIDDEN TERMINAL EASTER EGG:
+  - Toggles with ` (backtick) key
+  - Appears as overlay at bottom of screen
+  - Terminal style: white background, red text, "terminal v0.1 — type a command"
+  - Input field with blinking cursor
+  - Can be accessed anytime during experience
+
+  TERMINAL COMMANDS:
+  - help → lists all commands
+  - seeds → "the day you plant the seed is not the day you eat the fruit. keep planting. keep watering. keep trusting even when you can't see anything growing. KEEP. FUCKING. PLANTING."
+  - bravery → "you are not a coward. don't be a coward. no matter what. pursue what you really want. always tell the truth."
+  - move → "you're not a tree. MOVE. pivot. change direction. start over. you can go literally anywhere from here. stop being scared and MOVE :-)"
+  - hope → "God's Not Finished. there are so many tomorrows. so many versions of yourself you haven't met yet. good things you could never predict right around the corner. LFG :-)"
+  - patience → "you're allowed to want things before they arrive. desire is life-affirming. wanting is not a sin. waiting is not punishment. you're exactly on time even when it doesn't feel like it."
+  - 2025 → "you loved. you learned. you planted seeds in the dark. you're not who you were. you're exactly who you're becoming. AFFIRM!!!!!"
+  - heartbreak → "you speedran through love and heartbreak and that's GOOD actually. tomorrow is beautiful. redirect accepted. God's Not Finished :-)"
+  - bloom → "not everything you planted this year was meant to bloom this year. the garden remembers what you watered in the dark. trust the timing. trust the process. trust yourself."
+  - truth → "i always speak my truth :-) i always get clarity :-) i never leave anything unsaid :-) AFFIRM!!!!!"
+  - reset → "you can start over whenever you want. you can be whoever you decide to be. new game+ is always available :-)"
+  - notfinished → "God's Not Finished. God's Not Finished. God's Not Finished. God's Not Finished. keep going :-)"
+  - desktop → "some files refuse to be deleted. the good ones always stay :-)"
+  - clear → clears terminal text
+
+  FOOTER (fixed at bottom, always visible except on intro/final screens):
+  - Thin red line border-top
+  - Slow-scrolling marquee text: "let go and let God — trust the timing — God's Not Finished — keep planting seeds — you're exactly where you need to be — the universe is keeping score — tomorrow is beautiful — let go and let God —"
+  - Same continuous scroll style as reference site
+
+  TECHNICAL REQUIREMENTS:
+  - Single HTML file with embedded CSS and JavaScript
+  - No external dependencies or frameworks
+  - Drag-and-drop API for desktop screen (HTML5 drag/drop or mouse events)
+  - Responsive (works on mobile and desktop)
+  - Touch support for mobile drag-and-drop
+  - Clean, semantic HTML
+  - Smooth transitions between screens (fade in/out)
+  - Don't save user data (except maybe name in sessionStorage for personalization)
+  - Accessibility: proper contrast, semantic markup, keyboard navigation where possible
+
+  GLITCH EFFECTS TO INCLUDE:
+  - Random subtle hue-rotate on body (5% chance every 3 seconds, brief flash)
+  - Text glitch on hover (translate -1px/1px, slight rotation, scale jitter)
+  - Button glitch animation on hover
+  - Progress bar with blinking cursor line at the fill edge
+  - Occasional very subtle scanline overlay
+  - Numbers should jitter/glitch on hover
+  - File bounce effect when error occurs
+
+  STYLE REFERENCE - MATCH THIS EXACTLY:
+  ```css
+  body {
+    margin: 0;
+    background: white;
+    font-family: "Times New Roman", serif;
+    font-style: italic;
+    color: red;
+  }
+  button {
+    font-family: "Times New Roman", serif;
+    font-style: italic;
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+  }
+  input, textarea {
+    font-family: "Times New Roman", serif;
+    font-style: italic;
+    border: 1px solid red;
+    color: red;
+    background: white;
+    padding: 0.5rem;
+  }
+
+  CRITICAL TONE EXAMPLES:
+  - NOT: "You've grown so much this year!"
+  - YES: "you're not who you were in january and that's the whole fucking point. AFFIRM!!!!!"
+  - NOT: "Be patient with your journey"
+  - YES: "the day you plant the seed is not the day you eat the fruit KEEP PLANTING KEEP TRUSTING even when you can't see shit growing :-)"
+  - NOT: "Everything happens for a reason"
+  - YES: "that heartbreak redirected you. that rejection protected you. God's Not Finished and neither are you :-)"
+
+  Write it like you're texting someone you love at 2am with truths you can't keep inside anymore. Raw. Real. A little manic. A lot of love. Wearing your heart on your sleeve and hoping it helps someone else too.
+
+  Create this as a complete, functional single-page website with fully working drag-and-drop desktop interaction.
