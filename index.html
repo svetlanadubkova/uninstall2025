@@ -1,0 +1,1507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>UNINSTALL 2025.EXE</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background: white;
+      font-family: "Times New Roman", serif;
+      font-style: italic;
+      color: red;
+      overflow-x: hidden;
+      position: relative;
+      min-height: 100vh;
+      cursor: default;
+    }
+
+    ::selection {
+      background: red;
+      color: white;
+    }
+
+    /* Desktop Background - Always visible after name entry */
+    #desktop-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity 2s ease;
+    }
+
+    #desktop-background.visible {
+      opacity: 0.2;
+    }
+
+    #desktop-bg-header {
+      border-bottom: 1px solid red;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      background: rgba(255, 255, 255, 0.8);
+    }
+
+    /* Screens */
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .screen.active {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 1s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* Intro and Final - fully opaque */
+    #screen-intro, #screen-final {
+      background: white;
+    }
+
+    /* Other screens - semi-transparent to show desktop */
+    .screen:not(#screen-intro):not(#screen-final) {
+      background: rgba(255, 255, 255, 0.92);
+    }
+
+    /* Intro Screen */
+    .intro-screen h1 {
+      font-size: clamp(2rem, 10vw, 6rem);
+      text-align: center;
+      margin-bottom: 2rem;
+      animation: glitch 0.5s infinite;
+    }
+
+    .intro-screen p {
+      font-size: clamp(1rem, 3vw, 2rem);
+      margin-bottom: 4rem;
+    }
+
+    .intro-screen .prompt {
+      font-size: 0.9rem;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 50% { opacity: 1; }
+      51%, 100% { opacity: 0; }
+    }
+
+    @keyframes glitch {
+      0%, 90%, 100% { transform: translate(0); }
+      10% { transform: translate(-2px, 1px); }
+      20% { transform: translate(1px, -2px); }
+    }
+
+    /* Preparing Screen */
+    .marquee-container {
+      width: 100%;
+      max-width: 800px;
+      overflow: hidden;
+      border-top: 1px solid red;
+      border-bottom: 1px solid red;
+      padding: 1rem 0;
+      margin: 2rem 0;
+    }
+
+    .marquee {
+      display: inline-block;
+      white-space: nowrap;
+      animation: marquee 20s linear infinite;
+    }
+
+    @keyframes marquee {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+
+    .progress-bar {
+      width: 100%;
+      max-width: 400px;
+      height: 30px;
+      border: 1px solid red;
+      position: relative;
+      margin: 2rem 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: red;
+      width: 0%;
+      transition: width 3s linear;
+    }
+
+    /* User ID Screen */
+    input[type="text"], textarea {
+      font-family: "Times New Roman", serif;
+      font-style: italic;
+      border: 1px solid red;
+      color: red;
+      background: white;
+      padding: 1rem;
+      font-size: 1.2rem;
+      text-align: center;
+      outline: none;
+      margin: 1rem;
+    }
+
+    input:focus, textarea:focus {
+      background: rgba(255, 0, 0, 0.05);
+    }
+
+    /* Buttons */
+    button {
+      font-family: "Times New Roman", serif;
+      font-style: italic;
+      background: red;
+      color: white;
+      border: none;
+      padding: 0.8rem 2rem;
+      cursor: pointer;
+      font-size: 1rem;
+      margin: 0.5rem;
+      transition: all 0.3s;
+    }
+
+    button:hover {
+      animation: buttonGlitch 0.3s;
+    }
+
+    button.outline {
+      background: transparent;
+      color: red;
+      border: 1px solid red;
+    }
+
+    @keyframes buttonGlitch {
+      0%, 100% { transform: translate(0); }
+      25% { transform: translate(-2px, 1px); }
+      50% { transform: translate(1px, -2px); }
+      75% { transform: translate(-1px, -1px); }
+    }
+
+    /* Wizard Steps */
+    .wizard-container {
+      max-width: 800px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .wizard-header {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid red;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+    }
+
+    .wizard-content {
+      font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+      line-height: 1.8;
+      margin: 3rem 0;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wizard-title {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      animation: pulse 2s infinite;
+    }
+
+    .wizard-progress {
+      width: 100%;
+      max-width: 400px;
+      height: 20px;
+      border: 1px solid red;
+      margin-top: 2rem;
+    }
+
+    .wizard-progress-fill {
+      height: 100%;
+      background: red;
+      width: 0%;
+      animation: progressLoad 3s ease-out forwards;
+    }
+
+    @keyframes progressLoad {
+      0% { width: 0%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    /* Desktop Interaction Screen */
+    .desktop {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+    }
+
+    .desktop-header {
+      border-bottom: 1px solid red;
+      padding: 0.5rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .file {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100px;
+      cursor: grab;
+      user-select: none;
+      padding: 0.5rem;
+      transition: transform 0.2s;
+    }
+
+    .file:hover {
+      transform: scale(1.1);
+    }
+
+    .file:active {
+      cursor: grabbing;
+    }
+
+    .file-icon {
+      font-size: 2rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .file-name {
+      font-size: 0.75rem;
+      text-align: center;
+      word-break: break-all;
+    }
+
+    /* Bad files are red */
+    .file[data-type="bad"] .file-name {
+      color: red;
+    }
+
+    /* Good files are black */
+    .file[data-type="good"] .file-name {
+      color: black;
+    }
+
+    .trash {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 3rem;
+      padding: 1rem;
+      border: 2px dashed transparent;
+      transition: all 0.3s;
+    }
+
+    .trash.drag-over {
+      border-color: red;
+      background: rgba(255, 0, 0, 0.1);
+      transform: scale(1.1);
+    }
+
+    .continue-btn {
+      position: fixed;
+      bottom: 2rem;
+      left: 2rem;
+      z-index: 100;
+      animation: pulse 2s infinite;
+    }
+
+    /* Error Dialog */
+    .error-dialog {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      border: 3px solid red;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      z-index: 3000;
+      box-shadow: 4px 4px 0 rgba(255, 0, 0, 0.3);
+      display: none;
+    }
+
+    .error-dialog.show {
+      display: block;
+      animation: errorPop 0.3s;
+    }
+
+    @keyframes errorPop {
+      0% { transform: translate(-50%, -50%) scale(0.8); }
+      50% { transform: translate(-50%, -50%) scale(1.05); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .error-header {
+      background: red;
+      color: white;
+      padding: 0.5rem 1rem;
+      margin: -2rem -2rem 1rem -2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .error-close {
+      cursor: pointer;
+      font-size: 1.5rem;
+      font-style: normal;
+    }
+
+    .error-body {
+      padding: 1rem;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Terminal */
+    .terminal {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 250px;
+      background: white;
+      border-top: 2px solid red;
+      padding: 1rem;
+      font-size: 0.9rem;
+      z-index: 4000;
+      display: none;
+      flex-direction: column;
+    }
+
+    .terminal.show {
+      display: flex;
+      animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .terminal-output {
+      flex: 1;
+      overflow-y: auto;
+      margin-bottom: 1rem;
+      font-style: normal;
+    }
+
+    .terminal-input-line {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .terminal-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      color: red;
+      outline: none;
+      font-family: "Times New Roman", serif;
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+
+    .terminal-close {
+      cursor: pointer;
+      margin-left: 1rem;
+    }
+
+    /* Installing bars */
+    .install-item {
+      width: 100%;
+      max-width: 500px;
+      margin: 1rem 0;
+      opacity: 0;
+      transition: opacity 0.5s;
+    }
+
+    .install-item.show {
+      opacity: 1;
+    }
+
+    .install-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .install-bar {
+      width: 100%;
+      height: 20px;
+      border: 1px solid red;
+    }
+
+    .install-bar-fill {
+      height: 100%;
+      background: red;
+      width: 0%;
+      transition: width 1.5s ease-out;
+    }
+
+    /* Choice buttons */
+    .choice-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 2rem 0;
+    }
+
+    /* Cascading errors */
+    .error-cascade {
+      position: fixed;
+      background: white;
+      border: 2px solid red;
+      padding: 1.5rem;
+      width: 350px;
+      box-shadow: 4px 4px 0 red;
+      display: none;
+      z-index: 2000;
+    }
+
+    .error-cascade.show {
+      display: block;
+      animation: cascadePop 0.5s ease;
+    }
+
+    @keyframes cascadePop {
+      0% { transform: scale(0.8) rotate(-5deg); opacity: 0; }
+      100% { transform: scale(1) rotate(0deg); opacity: 1; }
+    }
+
+    /* Scanlines overlay */
+    .scanlines {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.03),
+        rgba(0, 0, 0, 0.03) 1px,
+        transparent 1px,
+        transparent 2px
+      );
+      opacity: 0.5;
+    }
+
+    /* Loading screen */
+    .loading-screen {
+      position: fixed;
+      inset: 0;
+      background: white;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .loading-screen.active {
+      display: flex;
+    }
+
+    .matrix-rain {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+      opacity: 0.2;
+    }
+
+    .matrix-column {
+      position: absolute;
+      top: -100%;
+      font-size: 0.8rem;
+      white-space: pre;
+      animation: matrixFall linear infinite;
+    }
+
+    @keyframes matrixFall {
+      to {
+        transform: translateY(calc(100vh + 100px));
+      }
+    }
+
+    .loading-box {
+      border: 2px solid red;
+      padding: 2rem 4rem;
+      background: white;
+      z-index: 1;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Enhanced file deletion */
+    @keyframes fileDelete {
+      0% {
+        transform: scale(1) rotate(0deg);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(0.5) rotate(180deg);
+        opacity: 0.5;
+      }
+      100% {
+        transform: scale(0) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .wizard-content {
+        font-size: 1.2rem;
+      }
+
+      .file {
+        width: 80px;
+      }
+
+      .trash {
+        font-size: 2rem;
+        bottom: 1rem;
+        right: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Scanlines overlay -->
+  <div class="scanlines"></div>
+
+  <!-- Terminal Toggle Button -->
+  <button
+    id="terminal-toggle-btn"
+    onclick="toggleTerminal()"
+    style="position: fixed; bottom: 1rem; right: 1rem; z-index: 5000; border: 1px solid red; padding: 0.5rem 1rem; background: white; color: red; cursor: pointer; font-family: 'Times New Roman', serif; font-style: italic;"
+    onmouseover="this.style.background='red'; this.style.color='white'"
+    onmouseout="this.style.background='white'; this.style.color='red'"
+  >
+    [terminal]
+  </button>
+
+  <!-- Loading Screen -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="matrix-rain" id="matrix-rain"></div>
+    <div class="loading-box">
+      <div id="loading-text" style="font-size: 1.5rem; text-align: center;">loading...</div>
+    </div>
+  </div>
+
+  <!-- Desktop Background (shows after name entry) -->
+  <div id="desktop-background">
+    <div id="desktop-bg-header"></div>
+    <div id="desktop-bg-files" style="position: relative; height: 100%;"></div>
+  </div>
+
+  <!-- Intro Screen -->
+  <div id="screen-intro" class="screen active intro-screen">
+    <h1>UNINSTALL 2025.EXE</h1>
+    <p>are you ready to let go?</p>
+    <div class="prompt">click anywhere to begin</div>
+  </div>
+
+  <!-- User ID Screen -->
+  <div id="screen-userid" class="screen">
+    <form id="user-form" style="display: flex; flex-direction: column; align-items: center;">
+      <label style="font-size: 1.5rem; margin-bottom: 2rem;">enter your name to continue:</label>
+      <input type="text" id="userName" required style="width: 300px;" autofocus />
+      <button type="submit">continue</button>
+    </form>
+  </div>
+
+  <!-- Desktop Interaction Screen (EARLY) -->
+  <div id="screen-desktop" class="screen">
+    <div class="desktop">
+      <div class="desktop-header">
+        <span id="desktop-screen-name">system</span>
+        <span style="font-size: 0.8rem;">drag unwanted files to trash. let go of what doesn't serve you.</span>
+      </div>
+      <div id="desktop-files"></div>
+      <div class="trash" id="trash">
+        <div class="file-icon">🗑️</div>
+        <div style="font-size: 0.9rem;">trash</div>
+      </div>
+      <button class="continue-btn" id="desktop-continue" style="display: none;" onclick="nextScreen()">
+        continue →
+      </button>
+    </div>
+  </div>
+
+  <!-- Wizard Screens -->
+  <div id="screen-wizard" class="screen">
+    <div class="wizard-container">
+      <div class="wizard-header">
+        <span id="wizard-header-text">UNINSTALL WIZARD</span>
+        <span id="wizard-step"></span>
+      </div>
+      <div class="wizard-title" id="wizard-title"></div>
+      <div class="wizard-content" id="wizard-content"></div>
+      <div id="wizard-buttons">
+        <button onclick="nextWizardStep()">next</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Transition Screen -->
+  <div id="screen-transition" class="screen">
+    <div style="text-align: center; max-width: 600px;">
+      <h2 style="font-size: 2rem; margin-bottom: 2rem;">2025.exe successfully archived.</h2>
+      <p style="font-size: 1.5rem; margin-bottom: 2rem;">preparing to install 2026.exe...</p>
+      <p style="font-size: 1.3rem; font-weight: normal;">do your part. release the rest.</p>
+      <button onclick="nextScreen()" style="margin-top: 3rem;">proceed</button>
+    </div>
+  </div>
+
+  <!-- Installing 2026 -->
+  <div id="screen-installing" class="screen">
+    <div style="width: 100%; max-width: 600px;">
+      <h2 style="font-size: 2rem; margin-bottom: 3rem; text-align: center;">installing 2026.exe...</h2>
+      <div id="install-items"></div>
+    </div>
+  </div>
+
+  <!-- Intention Screen -->
+  <div id="screen-intention" class="screen">
+    <div style="text-align: center; max-width: 500px; width: 100%;">
+      <label style="font-size: 1.8rem; margin-bottom: 2rem; display: block;">what do you want to feel in 2026?</label>
+      <textarea id="intention" rows="4" style="width: 100%; resize: none;"></textarea>
+      <p style="font-size: 0.8rem; margin: 1rem 0;">your answer is saved in your heart, not our database :-)</p>
+      <div style="display: flex; gap: 1rem; justify-content: center; margin-top: 2rem;">
+        <button class="outline" onclick="nextScreen()">skip</button>
+        <button onclick="nextScreen()">continue</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Final Screen -->
+  <div id="screen-final" class="screen">
+    <div style="text-align: center;">
+      <h1 style="font-size: 3rem; margin-bottom: 2rem;">installation complete.</h1>
+      <p style="font-size: 2rem; margin-bottom: 2rem;">2026.exe is ready.</p>
+      <p style="font-size: 1.3rem; margin-bottom: 0.5rem;">this is your one life.</p>
+      <p style="font-size: 1.1rem; margin-bottom: 2rem;">life is a video game. are you playing it on purpose?</p>
+      <p style="font-size: 1.2rem; margin-bottom: 1rem;">ready to resume game?</p>
+      <p style="font-size: 1rem;" class="prompt">
+        press any key to begin :-)
+      </p>
+      <!-- Fortune Oracle -->
+      <div id="crystal-ball" style="margin: 3rem 0; display: flex; flex-direction: column; align-items: center; gap: 1rem;">
+        <p style="font-size: 0.9rem; opacity: 0.7;">what does 2026 hold for you?</p>
+        <button onclick="showCrystalBall()">consult the oracle</button>
+      </div>
+      <div id="bouncing-egg" style="position: fixed; font-size: 2rem; font-family: monospace; cursor: pointer; z-index: 9998; filter: drop-shadow(0 0 8px rgba(255, 0, 0, 0.6)); user-select: none;" onclick="showEasterEgg(event)" onmouseover="this.style.filter='drop-shadow(0 0 12px rgba(255, 0, 0, 1))'; this.style.transform='scale(1.5)'" onmouseout="this.style.filter='drop-shadow(0 0 8px rgba(255, 0, 0, 0.6))'; this.style.transform='scale(1)'">[?]</div>
+    </div>
+  </div>
+
+  <!-- Crystal Ball Modal - Window Style -->
+  <div id="crystal-ball-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid red; width: 90%; max-width: 600px; box-shadow: 4px 4px 0px 0px rgba(255, 0, 0, 0.3); z-index: 10000;">
+    <!-- Title bar -->
+    <div style="background: red; color: white; padding: 0.5rem 1rem; display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem;">
+      <span>2026 FORTUNE</span>
+      <div style="display: flex; gap: 0.25rem;">
+        <span style="border: 1px solid white; padding: 0 0.5rem; cursor: not-allowed;">_</span>
+        <span style="border: 1px solid white; padding: 0 0.5rem; cursor: not-allowed;">□</span>
+        <span style="border: 1px solid white; padding: 0 0.5rem; cursor: pointer;" onclick="closeCrystalBall()" onmouseover="this.style.background='white'; this.style.color='red'" onmouseout="this.style.background=''; this.style.color='white'">X</span>
+      </div>
+    </div>
+    <!-- Content -->
+    <div style="padding: 2rem; text-align: center;">
+      <p id="crystal-ball-prediction" style="font-size: 2rem; margin-bottom: 1.5rem; line-height: 1.6;"></p>
+      <p style="font-size: 0.8rem; opacity: 0.7; margin-bottom: 2rem;">
+        the future is already written in your actions today
+      </p>
+      <button onclick="closeCrystalBall()">close</button>
+    </div>
+  </div>
+
+  <!-- Easter Egg Modal -->
+  <div id="easter-egg-modal" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border: 2px solid red; padding: 2rem; max-width: 500px; box-shadow: 8px 8px 0px 0px rgba(255, 0, 0, 0.3); z-index: 10000;">
+    <div style="background: red; color: white; padding: 0.5rem 1rem; margin: -2rem -2rem 1rem -2rem; font-size: 0.9rem;">
+      BONUS INSTALLATION
+    </div>
+    <div style="text-align: center;">
+      <p style="font-size: 1.5rem; margin-bottom: 1rem;">installing wonder.sys...</p>
+      <div style="width: 100%; border: 1px solid red; height: 1rem; margin-bottom: 1rem;">
+        <div id="easter-egg-progress" style="height: 100%; background: red; width: 0%; transition: width 2s;"></div>
+      </div>
+      <p style="font-size: 0.9rem; font-style: italic; margin-bottom: 1rem; line-height: 1.6;">
+        don't lose your sense of wonder...
+        stay curious. stay playful. the world needs people who aren't afraid to explore. not every path is marked.
+        some only appear once you’re already walking. keep playing.
+      </p>
+      <p style="font-size: 0.8rem; opacity: 0.7;">
+        installation complete. this can't be uninstalled :-)
+      </p>
+    </div>
+  </div>
+
+  <!-- Error Dialog -->
+  <div id="error-dialog" class="error-dialog">
+    <div class="error-header">
+      <span id="error-title">Error</span>
+      <span class="error-close" onclick="closeError()">×</span>
+    </div>
+    <div class="error-body">
+      <p id="error-message"></p>
+      <button onclick="closeError()" style="margin-top: 1rem;">OK</button>
+    </div>
+  </div>
+
+  <!-- Cascading Errors Container -->
+  <div id="cascade-container"></div>
+
+  <!-- Terminal -->
+  <div id="terminal" class="terminal">
+    <div class="terminal-output" id="terminal-output">
+      <div>GAME CONSOLE v2026 — type 'help' for powerups</div>
+    </div>
+    <div class="terminal-input-line">
+      <span>></span>
+      <input type="text" id="terminal-input" class="terminal-input" placeholder="type a command..." />
+      <span class="terminal-close" onclick="toggleTerminal()">✕</span>
+    </div>
+  </div>
+
+  <!-- Instruction Dialog -->
+  <div id="instruction-dialog" class="error-dialog">
+    <div class="error-header">
+      <span>Instructions</span>
+    </div>
+    <div class="error-body">
+      <p style="line-height: 1.8;">drag the files you want to let go of to the trash bin. <br><br>some files can't be deleted. those are the ones you need to keep.</p>
+      <button onclick="closeInstructions()" style="margin-top: 1rem;">OK</button>
+    </div>
+  </div>
+
+  <!-- Audio -->
+  <audio id="deleteSound" preload="auto">
+    <source src="sounds/crumple-03-40747.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    // State
+    let currentScreen = 'intro';
+    let currentWizardStep = 0;
+    let userName = '';
+    let draggedFile = null;
+
+    // Matrix rain for loading screen
+    function initMatrixRain() {
+      const container = document.getElementById('matrix-rain');
+      const chars = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+      const columns = 40;
+
+      for (let i = 0; i < columns; i++) {
+        const column = document.createElement('div');
+        column.className = 'matrix-column';
+        column.style.left = `${(i / columns) * 100}%`;
+        column.style.animationDuration = `${2 + Math.random() * 2}s`;
+        column.style.animationDelay = `${Math.random() * 2}s`;
+
+        let text = '';
+        for (let j = 0; j < 30; j++) {
+          text += chars[Math.floor(Math.random() * chars.length)] + '\n';
+        }
+        column.textContent = text;
+        container.appendChild(column);
+      }
+    }
+
+    // Show loading screen
+    function showLoading(message = 'loading...', duration = 2000) {
+      return new Promise(resolve => {
+        const loadingScreen = document.getElementById('loading-screen');
+        const loadingText = document.getElementById('loading-text');
+        loadingText.textContent = message;
+        loadingScreen.classList.add('active');
+
+        setTimeout(() => {
+          loadingScreen.classList.remove('active');
+          resolve();
+        }, duration);
+      });
+    }
+
+    // Initialize matrix rain on load
+    initMatrixRain();
+
+    const wizardSteps = [
+      {
+        step: 'step 1 of 8',
+        title: 'analyzing installed programs...',
+        content: "userName, temporary files served their purpose in this version. sometimes you delete to make space for an upgrade. sometimes you delete to make space for something new. but holding on to them slows the system and processes down. clearing space for what's next..."
+      },
+      {
+        step: 'step 2 of 8',
+        title: 'scanning for corrupted narratives...',
+        content: "you know yourself best. trust your pattern recognition. you're allowed to trust yourself. you're allowed to believe what you see. TRUST YOURSELF."
+      },
+      {
+        step: 'step 3 of 8',
+        title: 'ERROR: cannot delete hope.exe - file is protected',
+        content: "some things refuse to be uninstalled. there are so many tomorrows you haven't seen yet. so many people you haven't met. so many versions of yourself you haven't become.",
+        showError: true,
+        errorTitle: 'System Error',
+        errorMessage: "cannot delete hope.exe - file is protected by God's Not Finished.dll"
+      },
+      {
+        step: 'step 4 of 8',
+        title: 'archiving lessons learned...',
+        content: "THE DAY YOU PLANT THE SEED IS NOT THE DAY YOU EAT THE FRUIT. userName, don't forget everything you planted this year. you watered things in the dark. you trusted when you couldn't see. the garden remembers. the universe is keeping score. even the smallest seeds bloom one day. your seeds are still growing even if you can't see them yet KEEP PLANTING KEEP TRUSTING KEEP GOINGkjhsdfgjkhsdfg :-)"
+      },
+      {
+        step: 'step 5 of 8',
+        title: 'removing broken shortcuts...',
+        content: "heartbreak redirected you. rejection protected you. stop trying to get back on the path. there is no path. you can always change direction. you're not stuck - you're just scared. you're not a tree - MOVE!!!! pivot. start over. for the love of God, don't be a coward. there are no shortcuts, darling."
+      },
+      {
+        step: 'step 6 of 8',
+        title: 'WARNING: patience.exe is still processing...',
+        content: "not everything blooms on your timeline and that's okay. you're allowed to want things before they arrive. desire is life-affirming. you don't have to be patient perfectly. you just have to keep going."
+      },
+      {
+        step: 'step 7 of 8',
+        title: 'reorganizing fragmented experiences...',
+        content: "you're not who you were in january. you're not who you'll be in december 2026. you're always becoming. you're always shedding skin. you're a different person every 4 weeks and that's the whole point. shedding is never comfortable. growth is supposed to feel like this."
+      },
+      {
+        step: 'step 8 of 8',
+        title: 'ERROR: cannot install cynicism.exe - blocked by hope.dll',
+        content: "you could close off. you could decide love isn't worth it. you could build walls. but you won't. because you're not a coward. LFG :-)"
+      }
+    ];
+
+    // Screen management
+    function showScreen(screenId) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(`screen-${screenId}`).classList.add('active');
+      currentScreen = screenId;
+
+      // Start easter egg bouncing on final screen
+      if (screenId === 'final') {
+        setTimeout(() => bounceEgg(), 500);
+      }
+    }
+
+    async function nextScreen() {
+      const sequence = ['intro', 'userid', 'desktop', 'wizard', 'transition', 'installing', 'intention', 'final'];
+      const currentIndex = sequence.indexOf(currentScreen);
+      if (currentIndex < sequence.length - 1) {
+        const next = sequence[currentIndex + 1];
+
+        // Show loading screen for major transitions
+        const loadingMessages = {
+          'userid': 'initializing system...',
+          'desktop': 'loading filesystem...',
+          'wizard': 'analyzing system files...',
+          'transition': 'archiving 2025.exe...',
+          'installing': 'preparing installation...',
+          'final': 'finalizing setup...'
+        };
+
+        if (loadingMessages[next]) {
+          await showLoading(loadingMessages[next], 1500);
+        }
+
+        if (next === 'desktop') {
+          initDesktop();
+          showScreen('desktop');
+        } else if (next === 'wizard') {
+          showWizardStep(0);
+        } else if (next === 'installing') {
+          showScreen('installing');
+          startInstalling();
+        } else {
+          showScreen(next);
+        }
+      }
+    }
+
+    // Initialize desktop background
+    function initDesktopBackground() {
+      const files = [
+        { name: 'cynicism.exe', x: 10, y: 15 },
+        { name: 'bitterness.dll', x: 25, y: 20 },
+        { name: 'self-doubt.txt', x: 15, y: 40 },
+        { name: 'old-pain.zip', x: 5, y: 60 },
+        { name: 'resentment.sys', x: 30, y: 55 },
+        { name: 'cowardice.exe', x: 40, y: 25 },
+        { name: 'hope.exe', x: 60, y: 15 },
+        { name: 'love.dll', x: 70, y: 30 },
+        { name: 'trust.sys', x: 65, y: 50 },
+        { name: 'patience.sys', x: 55, y: 65 },
+        { name: 'faith.exe', x: 80, y: 20 },
+        { name: 'bravery.exe', x: 75, y: 60 }
+      ];
+
+      const container = document.getElementById('desktop-bg-files');
+      container.innerHTML = '';
+
+      files.forEach(file => {
+        const fileEl = document.createElement('div');
+        fileEl.className = 'file';
+        fileEl.style.left = file.x + '%';
+        fileEl.style.top = file.y + '%';
+        fileEl.style.pointerEvents = 'none';
+        fileEl.style.opacity = '0.5';
+        fileEl.innerHTML = `
+          <div class="file-icon">📄</div>
+          <div class="file-name">${file.name}</div>
+        `;
+        container.appendChild(fileEl);
+      });
+    }
+
+    // Show instructions
+    function showInstructions() {
+      document.getElementById('instruction-dialog').classList.add('show');
+    }
+
+    function closeInstructions() {
+      document.getElementById('instruction-dialog').classList.remove('show');
+    }
+
+    // Desktop drag and drop
+    function initDesktop() {
+      document.getElementById('desktop-screen-name').textContent = userName + "'s system";
+
+      // Hide continue button initially
+      document.getElementById('desktop-continue').style.display = 'none';
+
+      // Show instructions after a brief delay
+      setTimeout(() => {
+        showInstructions();
+      }, 500);
+
+      const files = [
+        { id: 1, name: 'cynicism.exe', type: 'bad', x: 10, y: 15 },
+        { id: 2, name: 'bitterness.dll', type: 'bad', x: 25, y: 20 },
+        { id: 3, name: 'self-doubt.txt', type: 'bad', x: 15, y: 40 },
+        { id: 4, name: 'old-pain.zip', type: 'bad', x: 5, y: 60 },
+        { id: 5, name: 'resentment.sys', type: 'bad', x: 30, y: 55 },
+        { id: 6, name: 'fear-of-failure.exe', type: 'bad', x: 20, y: 35 },
+        { id: 7, name: 'cowardice.exe', type: 'bad', x: 40, y: 25 },
+        { id: 8, name: 'love.dll', type: 'good', x: 60, y: 15 },
+        { id: 9, name: 'growth.exe', type: 'good', x: 70, y: 30 },
+        { id: 10, name: 'resilience.sys', type: 'good', x: 65, y: 50 },
+        { id: 11, name: 'wisdom.dll', type: 'good', x: 55, y: 65 },
+        { id: 12, name: 'courage.exe', type: 'good', x: 80, y: 20 }
+      ];
+
+      const container = document.getElementById('desktop-files');
+      container.innerHTML = '';
+
+      files.forEach(file => {
+        const fileEl = document.createElement('div');
+        fileEl.className = 'file';
+        fileEl.setAttribute('data-id', file.id);
+        fileEl.setAttribute('data-type', file.type);
+        fileEl.setAttribute('data-name', file.name);
+        fileEl.style.left = file.x + '%';
+        fileEl.style.top = file.y + '%';
+        fileEl.draggable = true;
+        fileEl.innerHTML = `
+          <div class="file-icon">📄</div>
+          <div class="file-name">${file.name}</div>
+        `;
+
+        fileEl.addEventListener('dragstart', handleDragStart);
+        fileEl.addEventListener('dragend', handleDragEnd);
+
+        container.appendChild(fileEl);
+      });
+
+      const trash = document.getElementById('trash');
+      trash.addEventListener('dragover', handleDragOver);
+      trash.addEventListener('dragleave', handleDragLeave);
+      trash.addEventListener('drop', handleDrop);
+    }
+
+    function handleDragStart(e) {
+      draggedFile = e.target.closest('.file');
+      e.dataTransfer.effectAllowed = 'move';
+      draggedFile.style.opacity = '0.5';
+    }
+
+    function handleDragEnd(e) {
+      document.getElementById('trash').classList.remove('drag-over');
+      if (draggedFile) {
+        draggedFile.style.opacity = '1';
+      }
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDrop(e) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+
+      if (!draggedFile) return;
+
+      const type = draggedFile.getAttribute('data-type');
+      const name = draggedFile.getAttribute('data-name');
+
+      if (type === 'bad') {
+        // Play delete sound
+        const sound = document.getElementById('deleteSound');
+        sound.currentTime = 0;
+        sound.play().catch(e => console.log('Audio play failed:', e));
+
+        draggedFile.style.animation = 'fileDelete 0.6s forwards';
+        setTimeout(() => {
+          draggedFile.remove();
+          checkDesktopComplete();
+        }, 600);
+      } else {
+        const errors = {
+          'love.dll': 'cannot delete love.dll - this file is required by your operating system',
+          'growth.exe': 'cannot delete growth.exe - still processing transformations',
+          'resilience.sys': 'access denied - resilience.sys is a critical system file',
+          'wisdom.dll': 'cannot remove wisdom.dll - earned through experience, cannot be uninstalled',
+          'courage.exe': "cannot delete courage.exe - you're going to need this"
+        };
+        showError('Error deleting ' + name, errors[name] || 'cannot delete file - access denied');
+      }
+
+      draggedFile = null;
+    }
+
+    function checkDesktopComplete() {
+      // Use setTimeout to ensure DOM has updated
+      setTimeout(() => {
+        const allFilesInDesktop = document.querySelectorAll('#desktop-files .file');
+        const badFiles = document.querySelectorAll('#desktop-files .file[data-type="bad"]');
+        const goodFiles = document.querySelectorAll('#desktop-files .file[data-type="good"]');
+
+        console.log('=== DESKTOP CHECK ===');
+        console.log('Total files in desktop:', allFilesInDesktop.length);
+        console.log('Bad files remaining:', badFiles.length);
+        console.log('Good files remaining:', goodFiles.length);
+
+        if (badFiles.length === 0) {
+          console.log('✅ All bad files deleted! Showing continue button...');
+          const continueBtn = document.getElementById('desktop-continue');
+          if (continueBtn) {
+            continueBtn.style.display = 'block';
+            continueBtn.style.animation = 'fadeIn 1s ease';
+            console.log('Continue button displayed!');
+          } else {
+            console.error('Continue button not found!');
+          }
+        } else {
+          console.log('Still have', badFiles.length, 'bad files to delete');
+        }
+      }, 200);
+    }
+
+    // Wizard steps
+    function showWizardStep(index) {
+      currentWizardStep = index;
+      showScreen('wizard');
+
+      const step = wizardSteps[index];
+      document.getElementById('wizard-step').textContent = step.step;
+      document.getElementById('wizard-title').textContent = step.title;
+
+      const content = document.getElementById('wizard-content');
+      content.innerHTML = ''; // Clear previous content
+
+      // Add text content with typing effect
+      const textContent = document.createElement('p');
+      textContent.style.fontSize = 'clamp(1.2rem, 2.5vw, 1.8rem)';
+      textContent.style.lineHeight = '1.8';
+      textContent.style.marginBottom = '2rem';
+      content.appendChild(textContent);
+
+      // Typing animation with userName replacement
+      let charIndex = 0;
+      const text = step.content.replace(/userName/g, userName);
+      function typeText() {
+        if (charIndex < text.length) {
+          textContent.textContent += text[charIndex];
+          charIndex++;
+          setTimeout(typeText, 20); // Adjust speed here
+        }
+      }
+      typeText();
+
+      // Always add a progress bar for visual feedback
+      const progressContainer = document.createElement('div');
+      progressContainer.innerHTML = `
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 0.5rem;">
+          <span>processing...</span>
+          <span id="wizard-progress-percent">0%</span>
+        </div>
+        <div class="wizard-progress">
+          <div class="wizard-progress-fill" id="wizard-progress-bar"></div>
+        </div>
+      `;
+      content.appendChild(progressContainer);
+
+      // Animate progress bar
+      setTimeout(() => {
+        const progressBar = document.getElementById('wizard-progress-bar');
+        const progressPercent = document.getElementById('wizard-progress-percent');
+        let progress = 0;
+        const interval = setInterval(() => {
+          progress += 2;
+          if (progress > 100) {
+            progress = 100;
+            clearInterval(interval);
+          }
+          if (progressBar) progressBar.style.width = progress + '%';
+          if (progressPercent) progressPercent.textContent = progress + '%';
+        }, 40);
+      }, 100);
+
+      if (step.showError) {
+        setTimeout(() => {
+          showError(step.errorTitle, step.errorMessage);
+        }, 500);
+      }
+    }
+
+    function nextWizardStep() {
+      if (currentWizardStep < wizardSteps.length - 1) {
+        showWizardStep(currentWizardStep + 1);
+      } else {
+        nextScreen(); // Move to cascade
+      }
+    }
+
+    // Error dialog
+    function showError(title, message) {
+      document.getElementById('error-title').textContent = title;
+      document.getElementById('error-message').textContent = message;
+      document.getElementById('error-dialog').classList.add('show');
+    }
+
+    function closeError() {
+      document.getElementById('error-dialog').classList.remove('show');
+    }
+
+    // Cascading Errors
+    function showCascadingErrors() {
+      showScreen('wizard');
+      document.getElementById('wizard-content').innerHTML = '';
+      document.getElementById('wizard-buttons').innerHTML = '';
+      document.getElementById('wizard-title').textContent = 'finalizing...';
+
+      const errors = [
+        "ERROR: cannot delete love.exe - access denied",
+        "ERROR: cannot remove hope.dll - system file protected by God's Not Finished",
+        "ERROR: cannot uninstall faith.sys - required by future.exe",
+        "ERROR: cannot remove growth.dll - permanently installed",
+        "some things aren't meant to be uninstalled :-)"
+      ];
+
+      let delay = 0;
+      errors.forEach((err, i) => {
+        setTimeout(() => {
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'error-cascade show';
+          errorDiv.style.left = (10 + i * 5) + '%';
+          errorDiv.style.top = (15 + i * 12) + '%';
+          errorDiv.innerHTML = `
+            <div style="background: red; color: white; padding: 0.5rem; margin: -1.5rem -1.5rem 1rem -1.5rem;">
+              System Error <span style="float: right;">X</span>
+            </div>
+            <p style="font-size: 0.9rem;">${err}</p>
+          `;
+          document.getElementById('cascade-container').appendChild(errorDiv);
+
+          if (i === errors.length - 1) {
+            setTimeout(() => {
+              document.getElementById('cascade-container').innerHTML = '';
+              nextScreen();
+            }, 3000);
+          }
+        }, delay);
+        delay += 1200;
+      });
+    }
+
+    // Installing 2026
+    function startInstalling() {
+      const items = [
+        { name: 'hope.exe', percent: 100 },
+        { name: 'clarity.exe', percent: 100 },
+        { name: 'bravery.exe', percent: 100 },
+        { name: 'trust.exe', percent: 100 },
+        { name: 'play.exe', percent: 100 },
+        { name: 'levity.exe', percent: 100 },
+        { name: 'badassery.exe', percent: 100 },
+        { name: 'patience.exe', percent: 31, note: '(this one takes time)' },
+        { name: 'faith.exe', percent: 100, infinite: true }
+      ];
+
+      const container = document.getElementById('install-items');
+      container.innerHTML = '';
+
+      items.forEach((item, index) => {
+        const div = document.createElement('div');
+        div.className = 'install-item';
+        div.innerHTML = `
+          <div class="install-label">
+            <span>installing ${item.name}... ${item.note || ''}</span>
+            <span class="percent">${item.infinite ? '∞' : '0%'}</span>
+          </div>
+          <div class="install-bar">
+            <div class="install-bar-fill"></div>
+          </div>
+        `;
+        container.appendChild(div);
+
+        setTimeout(() => {
+          div.classList.add('show');
+          setTimeout(() => {
+            const fill = div.querySelector('.install-bar-fill');
+            const percent = div.querySelector('.percent');
+            fill.style.width = item.percent + '%';
+            if (!item.infinite) {
+              percent.textContent = item.percent + '%';
+            }
+          }, 100);
+        }, index * 400);
+      });
+
+      setTimeout(() => {
+        nextScreen();
+      }, items.length * 400 + 2500);
+    }
+
+    // Terminal
+    function toggleTerminal() {
+      document.getElementById('terminal').classList.toggle('show');
+      if (document.getElementById('terminal').classList.contains('show')) {
+        document.getElementById('terminal-input').focus();
+      }
+    }
+
+    // Bouncing easter egg
+    let eggX = 50;
+    let eggY = 50;
+    let eggVelX = 0.5;
+    let eggVelY = 0.5;
+    let eggFound = false;
+
+    function bounceEgg() {
+      if (eggFound) return;
+
+      const egg = document.getElementById('bouncing-egg');
+      if (!egg) return;
+
+      eggX += eggVelX;
+      eggY += eggVelY;
+
+      if (eggX <= 0 || eggX >= 95) eggVelX = -eggVelX;
+      if (eggY <= 0 || eggY >= 90) eggVelY = -eggVelY;
+
+      eggX = Math.max(0, Math.min(95, eggX));
+      eggY = Math.max(0, Math.min(90, eggY));
+
+      egg.style.left = eggX + '%';
+      egg.style.top = eggY + '%';
+
+      requestAnimationFrame(bounceEgg);
+    }
+
+    // Crystal ball predictions
+    const crystalBallPredictions = [
+      "march.",
+      "someone from before.",
+      "closer than you think.",
+      "you'll know when.",
+      "impossible → possible.",
+      "you already know.",
+      "already starting.",
+      "worth the wait.",
+      "summer.",
+      "rest is coming.",
+      "exactly on time.",
+      "different. better.",
+      "stay ready.",
+      "more laughter ahead."
+    ];
+
+    // Pick one fortune for this user session
+    const userFortune = crystalBallPredictions[Math.floor(Math.random() * crystalBallPredictions.length)];
+
+    function showCrystalBall() {
+      const modal = document.getElementById('crystal-ball-modal');
+      const predictionText = document.getElementById('crystal-ball-prediction');
+
+      predictionText.textContent = userFortune;
+      modal.style.display = 'block';
+    }
+
+    function closeCrystalBall() {
+      document.getElementById('crystal-ball-modal').style.display = 'none';
+    }
+
+    function showEasterEgg(event) {
+      event.stopPropagation();
+      eggFound = true;
+
+      // Hide the bouncing egg
+      const egg = document.getElementById('bouncing-egg');
+      if (egg) egg.style.display = 'none';
+
+      const modal = document.getElementById('easter-egg-modal');
+      const progress = document.getElementById('easter-egg-progress');
+      modal.style.display = 'block';
+
+      // Animate progress bar
+      setTimeout(() => {
+        progress.style.width = '100%';
+      }, 100);
+
+      // Hide after 5 seconds
+      setTimeout(() => {
+        modal.style.display = 'none';
+        progress.style.width = '0%';
+      }, 5000);
+    }
+
+    // Start bouncing when on final screen
+    function startEasterEggBounce() {
+      if (currentScreen === 'final') {
+        bounceEgg();
+      }
+    }
+
+    function handleTerminalCommand(cmd) {
+      const output = document.getElementById('terminal-output');
+      const line = document.createElement('div');
+      line.textContent = '> ' + cmd;
+      output.appendChild(line);
+
+      const commands = {
+        'help': 'POWERUPS AVAILABLE: levelup, newgame+, respawn, savefile, xp, checkpoint, godmode, inventory, stats',
+        'levelup': 'LEVEL UP! +100 wisdom, +50 resilience, +75 courage. you\'re not the same player who started this year. NEW SKILLS UNLOCKED: pattern recognition, self-trust, boundary setting. you\'re literally a different build now. KEEP GRINDING.',
+        'newgame+': 'STARTING NEW GAME+ MODE... all your stats carry over. you keep the wisdom but lose the pain. 2026 is your second playthrough and you already know the controls. speedrun incoming :--)',
+        'respawn': 'RESPAWNING AT LAST CHECKPOINT... you\'re not stuck. you died and came back stronger. every restart is a second chance. pivot. change builds. respec your whole character if you want. THIS IS YOUR GAME.',
+        'savefile': 'PROGRESS SAVED: lessons learned, seeds planted, growth documented. the universe auto-saves every moment. you can\'t lose what you\'ve already unlocked. it\'s in your inventory forever.',
+        'xp': 'CURRENT XP: heartbreak +1000, vulnerability +800, honesty +600, trust +400. pain is just XP in disguise. you\'re grinding even when it doesn\'t feel like it. KEEP PLAYING.',
+        'checkpoint': 'CHECKPOINT REACHED: you made it through 2025. auto-save activated. you can always come back to this moment and remember how strong you were. God\'s Not Finished with your storyline.',
+        'godmode': 'GODMODE DISABLED. you\'re human. you\'re supposed to take damage. the game is hard on purpose. but you have infinite continues and the final boss is just your own fear. you\'re gonna win eventually.',
+        'inventory': 'CHECKING INVENTORY... you\'re carrying: love (unbreakable), hope (infinite uses), courage (rechargeable), resilience (legendary tier), growth (still equipped). you have everything you need.',
+        'stats': 'bravery: incomplete. self-trust: work in progress. hope: holding steady. patience: barely started. heartbreak: processed. you\'re not maxed out yet. YOU WILL CONTINUE TO LEVEL UP UNTIL THE DAY YOU DIE :-).',
+        'clear': ''
+      };
+
+      const response = document.createElement('div');
+      if (cmd === 'clear') {
+        output.innerHTML = '<div>GAME CONSOLE v2026 — type \'help\' for powerups</div>';
+      } else {
+        response.textContent = commands[cmd] || 'command not found: ' + cmd;
+        output.appendChild(response);
+      }
+
+      output.scrollTop = output.scrollHeight;
+    }
+
+    // Event Listeners
+    document.getElementById('screen-intro').addEventListener('click', nextScreen);
+
+    document.getElementById('user-form').addEventListener('submit', (e) => {
+      e.preventDefault();
+      userName = document.getElementById('userName').value.trim();
+      if (userName) {
+        // Initialize desktop background
+        document.getElementById('desktop-bg-header').textContent = userName + "'s system";
+        initDesktopBackground();
+        document.getElementById('desktop-background').classList.add('visible');
+
+        nextScreen();
+      }
+    });
+
+    document.getElementById('terminal-input').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const input = e.target.value.trim().toLowerCase();
+        if (input) {
+          handleTerminalCommand(input);
+          e.target.value = '';
+        }
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === '`') {
+        e.preventDefault();
+        toggleTerminal();
+      }
+    });
+
+    // Random glitch effect
+    setInterval(() => {
+      if (Math.random() < 0.05) {
+        document.body.style.filter = 'hue-rotate(2deg)';
+        setTimeout(() => {
+          document.body.style.filter = 'none';
+        }, 100);
+      }
+    }, 3000);
+
+    // Add fadeOut animation
+    const style = document.createElement('style');
+    style.textContent = '@keyframes fadeOut { to { opacity: 0; transform: scale(0.8); } }';
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

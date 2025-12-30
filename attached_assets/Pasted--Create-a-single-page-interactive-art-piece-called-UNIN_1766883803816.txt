@@ -51,7 +51,7 @@
      → "temporary files served their purpose in this version. sometimes you delete to make space for an upgrade. sometimes you delete to make space for something new. but holding on to them slows the system and processes down. clearing space for what's next..."
 
      Screen B: "analyzing installed programs..."
-     → "you learned how humans work better this year. including yourself. especially yourself. that alone is worth any heartbreak. you're not the same person who started this year. AFFIRM!!!!!"
+     → "you learned how humans work better this year. including yourself. especially yourself. you're not the same person who started this year. AFFIRM!!!!!"
 
      Screen C: "scanning for corrupted narratives..."
      → "you know yourself best. trust your pattern recognition. you're allowed to trust yourself. you're allowed to believe what you see. TRUST YOURSELF."
@@ -67,7 +67,7 @@
      → "heartbreak redirected you. rejection protected you. stop trying to get back on the path. there is no path. you can always change direction. you're not stuck - you're just scared. you're not a tree - MOVE!!!! pivot. start over. for the love of God, don't be a coward. there are no shortcuts, darling."
 
      Screen G: "WARNING: patience.exe is still processing..."
-     → "not everything blooms on your timeline and that's okay. you're allowed to want things before they arrive. desire is life-affirming. wanting is not weakness. you don't have to be patient perfectly. you just have to keep going. God's Not Finished :-)"
+     → "not everything blooms on your timeline and that's okay. you're allowed to want things before they arrive. desire is life-affirming. you don't have to be patient perfectly. you just have to keep going. God's Not Finished."
 
      Screen H: "scanning for corrupted files..."
      → "you speedran through love and heartbreak and growth and that's GOOD actually. you didn't run. you stayed present, open, vulnerable, and earnest even when it hurt. tomorrow is a beautiful thing. LFG :-)"
@@ -229,7 +229,7 @@
   - bravery → "you are not a coward. don't be a coward. no matter what. pursue what you really want. always tell the truth."
   - move → "you're not a tree. MOVE. pivot. change direction. start over. you can go literally anywhere from here. stop being scared and MOVE :-)"
   - hope → "God's Not Finished. there are so many tomorrows. so many versions of yourself you haven't met yet. good things you could never predict right around the corner. LFG :-)"
-  - patience → "you're allowed to want things before they arrive. desire is life-affirming. wanting is not a sin. waiting is not punishment. you're exactly on time even when it doesn't feel like it."
+  - patience → "you're allowed to want things before they arrive. desire is life-affirming. you're exactly on time even when it doesn't feel like it."
   - 2025 → "you loved. you learned. you planted seeds in the dark. you're not who you were. you're exactly who you're becoming. AFFIRM!!!!!"
   - heartbreak → "you speedran through love and heartbreak and that's GOOD actually. tomorrow is beautiful. redirect accepted. God's Not Finished :-)"
   - bloom → "not everything you planted this year was meant to bloom this year. the garden remembers what you watered in the dark. trust the timing. trust the process. trust yourself."

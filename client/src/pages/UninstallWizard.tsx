@@ -1,10 +1,10 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Trash2, FileText, AlertCircle, Terminal as TerminalIcon } from "lucide-react";
+import { Trash2, FileText, AlertCircle, Terminal as TerminalIcon, Zap } from "lucide-react";
 
 // --- Types ---
 
-type Screen = 
+type Screen =
   | "INTRO"
   | "PREPARING"
   | "USER_ID"
@@ -17,6 +17,7 @@ type Screen =
   | "WIZARD_G"
   | "WIZARD_H"
   | "WIZARD_I"
+  | "DESKTOP_INTRO" // Intro to desktop cleanup
   | "WIZARD_J_DESKTOP" // Interactive Desktop
   | "WIZARD_K"
   | "WIZARD_L"
@@ -48,9 +49,33 @@ const GlitchText = ({ children, className = "" }: { children: React.ReactNode, c
   );
 };
 
-const CRTOverlay = () => (
-  <div className="fixed inset-0 pointer-events-none z-50 scanlines opacity-50 mix-blend-multiply" />
-);
+const CRTOverlay = () => {
+  const [flicker, setFlicker] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (Math.random() < 0.05) {
+        setFlicker(true);
+        setTimeout(() => setFlicker(false), 50);
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <>
+      <div className="fixed inset-0 pointer-events-none z-50 scanlines opacity-50 mix-blend-multiply" />
+      {flicker && (
+        <motion.div
+          className="fixed inset-0 pointer-events-none z-50 bg-white"
+          initial={{ opacity: 0.3 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.05 }}
+        />
+      )}
+    </>
+  );
+};
 
 const ProgressBar = ({ progress, label }: { progress: number, label?: string }) => (
   <div className="w-full max-w-md mx-auto my-4">
@@ -75,6 +100,49 @@ const Button = ({ onClick, children, className = "" }: { onClick: () => void, ch
   </button>
 );
 
+const MatrixRain = ({ message = "loading..." }: { message?: string }) => {
+  const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+  const columns = 40;
+
+  return (
+    <div className="fixed inset-0 bg-white z-[200] flex items-center justify-center overflow-hidden">
+      <div className="absolute inset-0 font-mono text-xs overflow-hidden">
+        {Array.from({ length: columns }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute top-0 whitespace-pre opacity-20"
+            style={{ left: `${(i / columns) * 100}%` }}
+            initial={{ y: -100 }}
+            animate={{ y: window.innerHeight + 100 }}
+            transition={{
+              duration: 2 + Math.random() * 2,
+              repeat: Infinity,
+              ease: "linear",
+              delay: Math.random() * 2
+            }}
+          >
+            {Array.from({ length: 30 }).map((_, j) => (
+              <div key={j}>{chars[Math.floor(Math.random() * chars.length)]}</div>
+            ))}
+          </motion.div>
+        ))}
+      </div>
+      <motion.div
+        className="relative z-10 text-2xl text-center px-4 border border-[red] bg-white p-8"
+        initial={{ opacity: 0, scale: 0.8 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.3 }}
+      >
+        <div className="flex items-center gap-4">
+          <Zap className="w-6 h-6 animate-pulse" />
+          <span>{message}</span>
+          <Zap className="w-6 h-6 animate-pulse" />
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
 const ErrorDialog = ({ title, message, onOk }: { title: string, message: string, onOk: () => void }) => (
   <motion.div 
     initial={{ scale: 0.9, opacity: 0 }}
@@ -97,7 +165,7 @@ const ErrorDialog = ({ title, message, onOk }: { title: string, message: string,
 
 const Terminal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void }) => {
   const [input, setInput] = useState("");
-  const [history, setHistory] = useState<string[]>(["terminal v0.1 — type 'help' for commands"]);
+  const [history, setHistory] = useState<string[]>(["GAME CONSOLE v2026 — type 'help' for powerups"]);
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -117,25 +185,22 @@ const Terminal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void })
     let response = "";
 
     switch (cmd) {
-      case "help": response = "commands: seeds, bravery, move, hope, patience, 2025, heartbreak, bloom, truth, reset"; break;
-      case "seeds": response = "the day you plant the seed is not the day you eat the fruit. keep planting. keep watering. keep trusting even when you can't see anything growing. KEEP. FUCKING. PLANTING."; break;
-      case "bravery": response = "you are not a coward. don't be a coward. no matter what. pursue what you really want. always tell the truth."; break;
-      case "move": response = "you're not a tree. MOVE. pivot. change direction. start over. you can go literally anywhere from here. stop being scared and MOVE :-)"; break;
-      case "hope": response = "God's Not Finished. there are so many tomorrows. so many versions of yourself you haven't met yet. good things you could never predict right around the corner. LFG :-)"; break;
-      case "patience": response = "you're allowed to want things before they arrive. desire is life-affirming. wanting is not a sin. waiting is not punishment. you're exactly on time even when it doesn't feel like it."; break;
-      case "2025": response = "you loved. you learned. you planted seeds in the dark. you're not who you were. you're exactly who you're becoming. AFFIRM!!!!!"; break;
-      case "heartbreak": response = "you speedran through love and heartbreak and that's GOOD actually. tomorrow is beautiful. redirect accepted. God's Not Finished :-)"; break;
-      case "bloom": response = "not everything you planted this year was meant to bloom this year. the garden remembers what you watered in the dark. trust the timing. trust the process. trust yourself."; break;
-      case "truth": response = "i always speak my truth :-) i always get clarity :-) i never leave anything unsaid :-) AFFIRM!!!!!"; break;
-      case "reset": 
-        window.location.reload(); 
+      case "help": response = "POWERUPS AVAILABLE: levelup, newgame+, respawn, savefile, xp, checkpoint, godmode, inventory, stats"; break;
+      case "levelup": response = "LEVEL UP! +100 wisdom, +50 resilience, +75 courage. you're not the same player who started this year. NEW SKILLS UNLOCKED: pattern recognition, self-trust, boundary setting. you're literally a different build now. KEEP GRINDING."; break;
+      case "newgame+": response = "STARTING NEW GAME+ MODE... all your stats carry over. you keep the wisdom but lose the pain. 2026 is your second playthrough and you already know the controls. speedrun incoming :--)"; break;
+      case "respawn": response = "RESPAWNING AT LAST CHECKPOINT... you're not stuck. you died and came back stronger. every restart is a second chance. pivot. change builds. respec your whole character if you want. THIS IS YOUR GAME."; break;
+      case "savefile": response = "PROGRESS SAVED: lessons learned, seeds planted, growth documented. the universe auto-saves every moment. you can't lose what you've already unlocked. it's in your inventory forever."; break;
+      case "xp": response = "CURRENT XP: heartbreak +1000, vulnerability +800, honesty +600, trust +400. pain is just XP in disguise. you're grinding even when it doesn't feel like it. KEEP PLAYING."; break;
+      case "checkpoint": response = "CHECKPOINT REACHED: you made it through 2025. auto-save activated. you can always come back to this moment and remember how strong you were. God's Not Finished with your storyline."; break;
+      case "godmode": response = "GODMODE DISABLED. you're human. you're supposed to take damage. the game is hard on purpose. but you have infinite continues and the final boss is just your own fear. you're gonna win eventually."; break;
+      case "inventory": response = "CHECKING INVENTORY... you're carrying: love (unbreakable), hope (infinite uses), courage (rechargeable), resilience (legendary tier), growth (still equipped). you have everything you need."; break;
+      case "stats": response = "bravery: incomplete. self-trust: work in progress. hope: holding steady. patience: barely started. heartbreak: processed. you're not maxed out yet. YOU WILL CONTINUE TO LEVEL UP UNTIL THE DAY YOU DIE :-)."; break;
+      case "cls":
+      case "clear":
+        setHistory([]);
+        setInput("");
         return;
-      case "cls": 
-      case "clear": 
-        setHistory([]); 
-        setInput(""); 
-        return;
-      default: response = `command not found: ${cmd}`;
+      default: response = `command not found: ${cmd}. type 'help' for available powerups`;
     }
 
     setHistory([...history, `> ${input}`, response]);
@@ -173,21 +238,27 @@ const Terminal = ({ isOpen, onClose }: { isOpen: boolean, onClose: () => void })
 
 const IntroScreen = ({ onStart }: { onStart: () => void }) => (
   <div className="flex flex-col items-center justify-center h-screen cursor-pointer" onClick={onStart}>
-    <motion.h1 
-      className="text-6xl md:text-8xl italic mb-4 text-center animate-glitch px-4"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+    <motion.h1
+      className="text-6xl md:text-8xl italic mb-4 text-center px-4"
+      initial={{ opacity: 0, y: -50 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1 }}
+      whileHover={{ scale: 1.02 }}
     >
       UNINSTALL 2025.EXE
     </motion.h1>
-    <motion.p 
+    <motion.p
       className="text-xl md:text-2xl mb-12"
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.5 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.8 }}
     >
       are you ready to let go?
     </motion.p>
-    <motion.p 
-      className="text-sm blink"
-      animate={{ opacity: [0, 1, 0] }} transition={{ duration: 1.5, repeat: Infinity }}
+    <motion.p
+      className="text-sm"
+      animate={{ opacity: [0.3, 1, 0.3] }}
+      transition={{ duration: 2, repeat: Infinity }}
     >
       click anywhere to begin
     </motion.p>
@@ -195,26 +266,59 @@ const IntroScreen = ({ onStart }: { onStart: () => void }) => (
 );
 
 const PreparingScreen = ({ onComplete }: { onComplete: () => void }) => {
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
+    // Animate progress bar
+    const progressInterval = setInterval(() => {
+      setProgress(prev => {
+        if (prev >= 100) {
+          clearInterval(progressInterval);
+          return 100;
+        }
+        return prev + 2;
+      });
+    }, 50);
+
     const timer = setTimeout(onComplete, 3500);
-    return () => clearTimeout(timer);
+    return () => {
+      clearTimeout(timer);
+      clearInterval(progressInterval);
+    };
   }, [onComplete]);
 
   return (
     <div className="flex flex-col items-center justify-center h-screen px-4 w-full">
-      <p className="mb-4 text-xl">preparing to uninstall 2025.exe...</p>
-      
-      <div className="w-full max-w-2xl overflow-hidden whitespace-nowrap border-y border-[red] py-2 mb-8">
-        <motion.div 
-          className="inline-block"
-          animate={{ x: ["100%", "-100%"] }}
-          transition={{ duration: 20, ease: "linear", repeat: Infinity }}
-        >
-          heartbreak waiting growing breaking learning loving losing finding planting seeds trusting timing crying laughing wanting hoping doubting believing heartbreak waiting growing...
-        </motion.div>
+      <motion.p
+        className="mb-12 text-xl"
+        animate={{ opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 1.5, repeat: Infinity }}
+      >
+        preparing to uninstall 2025.exe...
+      </motion.p>
+
+      {/* Animated loading squares */}
+      <div className="flex gap-3 mb-12">
+        {[0, 1, 2, 3, 4].map((i) => (
+          <motion.div
+            key={i}
+            className="w-4 h-4 border border-[red]"
+            animate={{
+              backgroundColor: ["rgba(255, 0, 0, 0)", "rgba(255, 0, 0, 1)", "rgba(255, 0, 0, 0)"],
+            }}
+            transition={{
+              duration: 1.5,
+              repeat: Infinity,
+              delay: i * 0.2,
+              ease: "easeInOut"
+            }}
+          />
+        ))}
       </div>
 
-      <ProgressBar progress={100} />
+      <div className="w-full max-w-md">
+        <ProgressBar progress={progress} label={`${progress}%`} />
+      </div>
     </div>
   );
 };
@@ -242,52 +346,168 @@ const UserIdScreen = ({ onComplete, userName, setUserName }: { onComplete: () =>
   );
 };
 
-const WizardStep = ({ 
-  step, 
-  title, 
-  content, 
-  onNext, 
+const TypingText = ({ text, speed = 20 }: { text: string, speed?: number }) => {
+  const [displayedText, setDisplayedText] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (currentIndex < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayedText(prev => prev + text[currentIndex]);
+        setCurrentIndex(prev => prev + 1);
+      }, speed);
+      return () => clearTimeout(timer);
+    }
+  }, [currentIndex, text, speed]);
+
+  return (
+    <span>
+      {displayedText}
+      {currentIndex < text.length && (
+        <motion.span
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity }}
+          className="inline-block w-2 h-5 bg-[red] ml-1"
+        />
+      )}
+    </span>
+  );
+};
+
+const WizardStep = ({
+  step,
+  title,
+  content,
+  onNext,
   buttonText = "next",
   showError = false,
-  errorMessage = ""
-}: { 
-  step: string, 
-  title: string, 
-  content: React.ReactNode, 
+  errorMessage = "",
+  useTyping = false,
+  showProgress = true,
+  userName = ""
+}: {
+  step: string,
+  title: string,
+  content: React.ReactNode,
   onNext: () => void,
   buttonText?: string,
   showError?: boolean,
-  errorMessage?: string
+  errorMessage?: string,
+  useTyping?: boolean,
+  showProgress?: boolean,
+  userName?: string
 }) => {
   const [showErr, setShowErr] = useState(showError);
+  const [contentVisible, setContentVisible] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setContentVisible(true), 300);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (showProgress && contentVisible) {
+      const interval = setInterval(() => {
+        setProgress(prev => {
+          if (prev >= 100) {
+            clearInterval(interval);
+            return 100;
+          }
+          return prev + 2;
+        });
+      }, 40);
+      return () => clearInterval(interval);
+    }
+  }, [showProgress, contentVisible]);
 
   return (
-    <div className="flex flex-col h-screen max-w-2xl mx-auto p-8 relative">
-      <div className="flex justify-between border-b border-[red] pb-2 mb-12">
-        <span>UNINSTALL WIZARD</span>
-        <span>{step}</span>
-      </div>
-
-      <div className="flex-1 flex flex-col justify-center gap-8">
-        {showErr && (
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
-            <ErrorDialog title="Error" message={errorMessage} onOk={() => setShowErr(false)} />
+    <div className="flex flex-col h-screen items-center justify-center p-4 relative">
+      {/* Windows-style window */}
+      <motion.div
+        className="w-full max-w-2xl border-2 border-[red] bg-white shadow-[4px_4px_0px_0px_rgba(255,0,0,0.3)]"
+        initial={{ scale: 0.9, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+      >
+        {/* Title bar */}
+        <div className="bg-[red] text-white px-3 py-1 flex justify-between items-center text-sm">
+          <span>UNINSTALL WIZARD</span>
+          <div className="flex gap-1">
+            <span className="border border-white px-2 cursor-not-allowed">_</span>
+            <span className="border border-white px-2 cursor-not-allowed">□</span>
+            <span className="border border-white px-2 cursor-not-allowed">X</span>
           </div>
-        )}
-
-        <div className="space-y-2">
-          <h2 className="text-xl animate-pulse">{title}</h2>
-          {typeof content === 'string' ? (
-            <p className="text-2xl leading-relaxed">{content}</p>
-          ) : (
-            content
-          )}
         </div>
+
+        {/* Content area */}
+        <div className="p-8">
+          <motion.div
+            className="text-xs mb-6 opacity-70"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 0.7 }}
+          >
+            {step}
+          </motion.div>
+
+          <div className="flex-1 flex flex-col justify-center gap-8 min-h-[300px]">
+            {showErr && (
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50">
+                <ErrorDialog title="Error" message={errorMessage} onOk={() => setShowErr(false)} />
+              </div>
+            )}
+
+        <motion.div
+          className="space-y-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <motion.h2
+            className="text-xl"
+            initial={{ x: -10 }}
+            animate={{ x: 0 }}
+          >
+            {title}
+          </motion.h2>
+          {contentVisible && (
+            <>
+              {typeof content === 'string' ? (
+                <p className="text-2xl leading-relaxed">
+                  {useTyping ? <TypingText text={content} speed={15} /> : content}
+                </p>
+              ) : (
+                content
+              )}
+              {showProgress && (
+                <div className="w-full max-w-md mt-8">
+                  <div className="flex justify-between text-xs mb-1">
+                    <span>processing...</span>
+                    <span>{progress}%</span>
+                  </div>
+                  <div className="w-full border border-[red] h-4 p-0.5">
+                    <motion.div
+                      className="h-full bg-[red]"
+                      style={{ width: `${progress}%` }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  </div>
+                </div>
+              )}
+            </>
+          )}
+        </motion.div>
       </div>
 
-      <div className="flex justify-center pt-8 border-t border-[red]">
-        <Button onClick={onNext}>{buttonText}</Button>
-      </div>
+          <motion.div
+            className="flex justify-end pt-8 border-t border-[red] mt-6"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <Button onClick={onNext}>{buttonText}</Button>
+          </motion.div>
+        </div>
+      </motion.div>
     </div>
   );
 };
@@ -341,26 +561,43 @@ const CascadingErrorsScreen = ({ onComplete }: { onComplete: () => void }) => {
 
 const Install2026Screen = ({ onComplete }: { onComplete: () => void }) => {
   const items = [
-    { name: "hope.exe", target: 73 },
-    { name: "clarity.exe", target: 89 },
-    { name: "bravery.exe", target: 100 },
-    { name: "trust.exe", target: 100 },
-    { name: "play.exe", target: 100 },
-    { name: "levity.exe", target: 100 },
-    { name: "badassery.exe", target: 100 },
-    { name: "patience.exe", target: 31 },
-    { name: "faith.exe", target: 100, infinite: true },
+    { name: "hope.exe", target: 100, message: "installation complete" },
+    { name: "clarity.exe", target: 100, message: "vision enhanced" },
+    { name: "bravery.exe", target: 100, message: "fear removal complete" },
+    { name: "trust.exe", target: 100, message: "self-trust protocol activated" },
+    { name: "play.exe", target: 100, message: "levity mode enabled" },
+    { name: "levity.exe", target: 100, message: "taking life lightly..." },
+    { name: "badassery.exe", target: 100, message: "confidence restored" },
+    { name: "patience.exe", target: 31, message: "still processing..." },
+    { name: "faith.exe", target: 100, infinite: true, message: "God's.Not.Finished" },
   ];
-  
+
   const [currentItem, setCurrentItem] = useState(0);
+  const [progress, setProgress] = useState<number[]>(new Array(items.length).fill(0));
 
   useEffect(() => {
     if (currentItem < items.length) {
-       // Fake progress animation logic would go here, simplified for brevity
-       const timer = setTimeout(() => {
-         setCurrentItem(prev => prev + 1);
-       }, 1500);
-       return () => clearTimeout(timer);
+      // Animate progress bar for current item
+      const targetProgress = items[currentItem].infinite ? 100 : items[currentItem].target;
+      const progressInterval = setInterval(() => {
+        setProgress(prev => {
+          const newProgress = [...prev];
+          if (newProgress[currentItem] < targetProgress) {
+            newProgress[currentItem] = Math.min(newProgress[currentItem] + 5, targetProgress);
+          }
+          return newProgress;
+        });
+      }, 50);
+
+      const timer = setTimeout(() => {
+        clearInterval(progressInterval);
+        setCurrentItem(prev => prev + 1);
+      }, 1500);
+
+      return () => {
+        clearTimeout(timer);
+        clearInterval(progressInterval);
+      };
     } else {
       setTimeout(onComplete, 2000);
     }
@@ -368,24 +605,59 @@ const Install2026Screen = ({ onComplete }: { onComplete: () => void }) => {
 
   return (
     <div className="flex flex-col items-center justify-center h-screen px-8 max-w-2xl mx-auto">
-       <h2 className="text-2xl mb-8">installing 2026.exe...</h2>
-       <div className="w-full space-y-4">
-         {items.map((item, i) => (
-           <div key={i} className={`transition-opacity duration-500 ${i > currentItem ? 'opacity-0' : 'opacity-100'}`}>
-             <div className="flex justify-between text-sm mb-1">
-               <span>installing {item.name}...</span>
-               <span>{i < currentItem ? (item.infinite ? "∞" : "100%") : "..."}</span>
-             </div>
-             <div className="w-full border border-[red] h-4 p-0.5">
-               <motion.div 
-                 className="h-full bg-[red]"
-                 initial={{ width: 0 }}
-                 animate={{ width: i < currentItem ? "100%" : "0%" }}
-               />
-             </div>
-           </div>
-         ))}
-       </div>
+      <motion.h2
+        className="text-2xl mb-8"
+        animate={{ opacity: [0.7, 1, 0.7] }}
+        transition={{ duration: 2, repeat: Infinity }}
+      >
+        installing 2026.exe...
+      </motion.h2>
+      <div className="w-full space-y-4">
+        {items.map((item, i) => (
+          <motion.div
+            key={i}
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: i <= currentItem ? 1 : 0.3, x: 0 }}
+            transition={{ delay: i * 0.1 }}
+          >
+            <div className="flex justify-between text-sm mb-1 font-bold">
+              <span>
+                {i === currentItem && ">"} {item.name}
+              </span>
+              <span>
+                {i < currentItem
+                  ? item.infinite
+                    ? "∞"
+                    : `${item.target}%`
+                  : i === currentItem
+                  ? `${progress[i]}%`
+                  : "..."}
+              </span>
+            </div>
+            <div className="w-full border border-[red] h-4 p-0.5">
+              <motion.div
+                className="h-full bg-[red]"
+                style={{ width: `${progress[i]}%` }}
+                animate={
+                  item.infinite && i < currentItem
+                    ? { opacity: [1, 0.5, 1] }
+                    : {}
+                }
+                transition={{ duration: 1, repeat: Infinity }}
+              />
+            </div>
+            {i < currentItem && progress[i] >= item.target && (
+              <motion.p
+                className="text-sm mt-1 font-bold"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                {item.message}
+              </motion.p>
+            )}
+          </motion.div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -402,19 +674,288 @@ const IntentionScreen = ({ onComplete }: { onComplete: () => void }) => (
   </div>
 );
 
-const FinalScreen = () => (
-  <div className="flex flex-col items-center justify-center h-screen cursor-pointer animate-fade-in">
-     <h1 className="text-4xl mb-4">installation complete.</h1>
-     <p className="text-2xl mb-12">2026.exe is ready.</p>
-     <p className="mb-4">ready to resume game?</p>
-     <p className="text-sm blink">press any key to begin :-)</p>
+const DesktopIntroScreen = ({ onContinue }: { onContinue: () => void }) => (
+  <div className="flex flex-col items-center justify-center h-screen px-4 max-w-3xl mx-auto">
+    <motion.div
+      className="text-center space-y-8"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+    >
+      <h2 className="text-3xl mb-8">time to clean up your system...</h2>
+      <div className="text-xl space-y-6 leading-relaxed text-left border border-[red] p-8">
+        <p>your computer is full of files from 2025.</p>
+        <p>some of them are corrupted. some are toxic. some need to go.</p>
+        <p className="font-bold">drag the corrupted files to the trash. </p>
+        <p className="text-sm opacity-70">the good stuff can't be deleted - it's protected by something stronger than you.</p>
+      </div>
+      <Button onClick={onContinue} className="mt-8">
+        begin cleanup →
+      </Button>
+    </motion.div>
   </div>
 );
 
+const FinalScreen = () => {
+  const [showGlow, setShowGlow] = useState(false);
+  const [easterEggFound, setEasterEggFound] = useState(false);
+  const [showEasterEgg, setShowEasterEgg] = useState(false);
+  const [bouncePosition, setBouncePosition] = useState({ x: 50, y: 50 });
+  const [bounceVelocity, setBounceVelocity] = useState({ x: 0.5, y: 0.5 });
+  const [crystalBallMessage, setCrystalBallMessage] = useState("");
+  const [showCrystalBall, setShowCrystalBall] = useState(false);
+
+  const crystalBallPredictions = [
+    "march.",
+    "someone from before.",
+    "closer than you think.",
+    "you'll know when.",
+    "impossible → possible.",
+    "you already know.",
+    "already starting.",
+    "worth the wait.",
+    "summer.",
+    "rest is coming.",
+    "exactly on time.",
+    "different. better.",
+    "stay ready.",
+    "more laughter ahead."
+  ];
+
+  // Pick one fortune for this user session
+  const [userFortune] = useState(() => {
+    return crystalBallPredictions[Math.floor(Math.random() * crystalBallPredictions.length)];
+  });
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowGlow(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (easterEggFound) return;
+
+    const interval = setInterval(() => {
+      setBouncePosition(prev => {
+        let newX = prev.x + bounceVelocity.x;
+        let newY = prev.y + bounceVelocity.y;
+        let newVelX = bounceVelocity.x;
+        let newVelY = bounceVelocity.y;
+
+        if (newX <= 0 || newX >= 95) newVelX = -newVelX;
+        if (newY <= 0 || newY >= 90) newVelY = -newVelY;
+
+        setBounceVelocity({ x: newVelX, y: newVelY });
+        return { x: Math.max(0, Math.min(95, newX)), y: Math.max(0, Math.min(90, newY)) };
+      });
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, [bounceVelocity, easterEggFound]);
+
+  const handleEasterEgg = () => {
+    setEasterEggFound(true);
+    setShowEasterEgg(true);
+    setTimeout(() => setShowEasterEgg(false), 5000);
+  };
+
+  const handleCrystalBall = () => {
+    setCrystalBallMessage(userFortune);
+    setShowCrystalBall(true);
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <motion.h1
+        className="text-4xl mb-4"
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        installation complete.
+      </motion.h1>
+      <motion.p
+        className="text-2xl mb-8"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.5 }}
+      >
+        2026.exe is ready.
+      </motion.p>
+
+      {/* Fortune Oracle */}
+      <motion.div
+        className="my-12 flex flex-col items-center gap-4"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.5 }}
+      >
+        <motion.div
+          className="text-center"
+          animate={{ opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+          <p className="text-sm mb-2">what does 2026 hold for you?</p>
+        </motion.div>
+        <Button onClick={handleCrystalBall}>consult the oracle</Button>
+      </motion.div>
+
+      <motion.div
+        className="text-center space-y-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2 }}
+      >
+        <p className="text-xl mb-2">this is your one life.</p>
+        <p className="text-lg mb-6">
+          <a
+            href="https://thisisyouronelife.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline text-[red] hover:opacity-80 transition"
+          >
+            life is a video game
+          </a>
+          .
+        </p>
+        <p className="mb-4">ready to resume game?</p>
+        <motion.p
+          className="text-sm"
+          animate={{ opacity: [0.3, 1, 0.3] }}
+          transition={{ duration: 2, repeat: Infinity }}
+        >
+         :-)
+        </motion.p>
+      </motion.div>
+
+      {/* Bouncing Easter Egg - Video Game Style */}
+      {!easterEggFound && (
+        <motion.div
+          onClick={(e) => { e.stopPropagation(); handleEasterEgg(); }}
+          className="fixed cursor-pointer z-[9998] select-none font-mono"
+          style={{
+            left: `${bouncePosition.x}%`,
+            top: `${bouncePosition.y}%`,
+            fontSize: '2rem',
+            filter: 'drop-shadow(0 0 8px rgba(255, 0, 0, 0.6))'
+          }}
+          animate={{
+            scale: [1, 1.15, 1],
+            rotate: [0, 5, -5, 0]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+          whileHover={{
+            scale: 1.5,
+            filter: 'drop-shadow(0 0 12px rgba(255, 0, 0, 1))'
+          }}
+        >
+          [?]
+        </motion.div>
+      )}
+
+      {/* Crystal Ball Modal - Window Style */}
+      <AnimatePresence>
+        {showCrystalBall && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border-2 border-[red] w-full max-w-xl shadow-[4px_4px_0px_0px_rgba(255,0,0,0.3)] z-[9999]"
+          >
+            {/* Title bar */}
+            <div className="bg-[red] text-white px-3 py-1 flex justify-between items-center text-sm">
+              <span>2026 FORTUNE</span>
+              <div className="flex gap-1">
+                <span className="border border-white px-2 cursor-not-allowed">_</span>
+                <span className="border border-white px-2 cursor-not-allowed">□</span>
+                <span
+                  className="border border-white px-2 cursor-pointer hover:bg-white hover:text-[red]"
+                  onClick={() => setShowCrystalBall(false)}
+                >
+                  X
+                </span>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-8">
+              <motion.div
+                className="text-center"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+              >
+                <p className="text-3xl mb-6 leading-relaxed">{crystalBallMessage}</p>
+                <p className="text-xs opacity-70">the future is already written in your actions today</p>
+              </motion.div>
+
+              <div className="flex justify-center mt-8">
+                <Button onClick={() => setShowCrystalBall(false)}>close</Button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Easter Egg Modal */}
+      <AnimatePresence>
+        {showEasterEgg && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-white border-2 border-[red] p-8 max-w-md shadow-[8px_8px_0px_0px_rgba(255,0,0,0.3)] z-[9999]"
+          >
+            <div className="bg-[red] text-white px-3 py-1 text-sm mb-4 -mx-8 -mt-8">
+              SECRET INSTALLATION
+            </div>
+            <div className="text-center space-y-4">
+              <p className="text-2xl mb-4">installing wonder.sys...</p>
+              <motion.div
+                className="w-full border border-[red] h-4"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              >
+                <motion.div
+                  className="h-full bg-[red]"
+                  initial={{ width: "0%" }}
+                  animate={{ width: "100%" }}
+                  transition={{ duration: 2 }}
+                />
+              </motion.div>
+              <p className="text-sm mt-4 italic">
+                don't lose your sense of wonder. don't forget how to be delighted by small things.
+                stay curious. stay playful. the world needs people who never stopped marveling at it.
+              </p>
+              <p className="text-xs opacity-70 mt-2">
+                installation complete. this can't be uninstalled :-)
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      {showGlow && (
+        <motion.div
+          className="absolute inset-0 pointer-events-none"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.1, 0] }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
+          <div className="absolute inset-0 bg-gradient-radial from-red-500/10 to-transparent" />
+        </motion.div>
+      )}
+    </div>
+  );
+};
+
 // --- Desktop Screen Logic (Complex) ---
 
-const DesktopScreen = ({ onComplete }: { onComplete: () => void }) => {
+const DesktopScreen = ({ onComplete, userName }: { onComplete: () => void, userName: string }) => {
   const [files, setFiles] = useState<FileItem[]>([
+    // Bad files to delete
     { id: "1", name: "cynicism.exe", type: "bad", x: 100, y: 100 },
     { id: "2", name: "bitterness.dll", type: "bad", x: 250, y: 150 },
     { id: "3", name: "self-doubt.txt", type: "bad", x: 150, y: 300 },
@@ -422,36 +963,17 @@ const DesktopScreen = ({ onComplete }: { onComplete: () => void }) => {
     { id: "5", name: "resentment.sys", type: "bad", x: 300, y: 400 },
     { id: "6", name: "fear.exe", type: "bad", x: 200, y: 550 },
     { id: "7", name: "cowardice.exe", type: "bad", x: 400, y: 200 },
-    { id: "8", name: "hope.exe", type: "good", x: 600, y: 100 },
-    { id: "9", name: "love.dll", type: "good", x: 700, y: 250 },
-    { id: "10", name: "trust.sys", type: "good", x: 650, y: 400 },
-    { id: "11", name: "faith.exe", type: "good", x: 800, y: 150 },
-    { id: "12", name: "bravery.exe", type: "good", x: 750, y: 500 },
+    // Good files that already exist (different from what we'll install)
+    { id: "8", name: "love.dll", type: "good", x: 600, y: 100 },
+    { id: "9", name: "growth.exe", type: "good", x: 700, y: 250 },
+    { id: "10", name: "resilience.sys", type: "good", x: 650, y: 400 },
+    { id: "11", name: "wisdom.dll", type: "good", x: 800, y: 150 },
+    { id: "12", name: "courage.exe", type: "good", x: 750, y: 500 },
   ]);
 
   const [error, setError] = useState<{title: string, message: string} | null>(null);
   const trashRef = useRef<HTMLDivElement>(null);
-  const [deletedBadCount, setDeletedBadCount] = useState(0);
-  const [autoDeleting, setAutoDeleting] = useState(false);
-
-  // Auto delete remaining bad files after user deletes a few
-  useEffect(() => {
-    if (deletedBadCount >= 2 && !autoDeleting) {
-      setAutoDeleting(true);
-    }
-  }, [deletedBadCount]);
-
-  useEffect(() => {
-    if (autoDeleting) {
-      const badFiles = files.filter(f => f.type === "bad");
-      if (badFiles.length > 0) {
-        const timer = setTimeout(() => {
-          setFiles(prev => prev.filter(f => f.id !== badFiles[0].id));
-        }, 1000);
-        return () => clearTimeout(timer);
-      }
-    }
-  }, [autoDeleting, files]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const handleDragEnd = (file: FileItem, info: any) => {
     // Simple collision detection with trash bin (bottom right)
@@ -464,23 +986,27 @@ const DesktopScreen = ({ onComplete }: { onComplete: () => void }) => {
     const dropY = info.point.y;
 
     if (
-      dropX >= trashRect.left && 
-      dropX <= trashRect.right && 
-      dropY >= trashRect.top && 
+      dropX >= trashRect.left &&
+      dropX <= trashRect.right &&
+      dropY >= trashRect.top &&
       dropY <= trashRect.bottom
     ) {
       if (file.type === "bad") {
+        // Play delete sound
+        if (audioRef.current) {
+          audioRef.current.currentTime = 0;
+          audioRef.current.play().catch(e => console.log('Audio play failed:', e));
+        }
+
         setFiles(prev => prev.filter(f => f.id !== file.id));
-        setDeletedBadCount(prev => prev + 1);
       } else {
         // Trigger error for good files
         const errors: Record<string, string> = {
-          "hope.exe": "cannot delete hope.exe - file is protected by God's Not Finished.dll",
           "love.dll": "cannot delete love.dll - this file is required by your operating system",
-          "trust.sys": "access denied - trust.sys is a critical system file",
-          "patience.sys": "cannot delete patience.sys - still processing future operations",
-          "faith.exe": "cannot remove faith.exe - needed for future operations",
-          "bravery.exe": "cannot delete bravery.exe - you're going to need this"
+          "growth.exe": "cannot delete growth.exe - still processing transformations",
+          "resilience.sys": "access denied - resilience.sys is a critical system file",
+          "wisdom.dll": "cannot remove wisdom.dll - earned through experience, cannot be uninstalled",
+          "courage.exe": "cannot delete courage.exe - you're going to need this"
         };
         setError({
           title: `Error deleting ${file.name}`,
@@ -491,13 +1017,35 @@ const DesktopScreen = ({ onComplete }: { onComplete: () => void }) => {
   };
 
   const badFilesLeft = files.filter(f => f.type === "bad").length;
+  const goodFilesLeft = files.filter(f => f.type === "good").length;
+  const [showModal, setShowModal] = useState(false);
+
+  // Show modal when all bad files are deleted
+  useEffect(() => {
+    console.log('🔍 Bad files:', badFilesLeft);
+    console.log('🔍 Good files:', goodFilesLeft);
+    console.log('🔍 Total files:', files.length);
+
+    if (badFilesLeft === 0 && goodFilesLeft > 0 && !showModal) {
+      console.log('✅ All bad files deleted! Showing modal...');
+      // Small delay to ensure smooth transition
+      setTimeout(() => setShowModal(true), 300);
+    }
+  }, [badFilesLeft, goodFilesLeft, files.length, showModal]);
 
   return (
-    <div className="relative w-full h-full bg-white overflow-hidden p-4">
+    <div className="relative w-full h-screen bg-white overflow-hidden p-4">
+      {/* Audio element for delete sound */}
+      <audio ref={audioRef} preload="auto">
+        <source src="/sounds/crumple-03-40747.mp3" type="audio/mpeg" />
+      </audio>
+
       {/* Top Bar */}
       <div className="absolute top-0 left-0 w-full border-b border-[red] px-4 py-2 flex justify-between items-center bg-white z-10">
-        <span>my computer - 2025 cleanup</span>
-        <span className="text-xs">drag unwanted files to trash</span>
+        <span>{userName}'s system</span>
+        <div className="flex gap-4 items-center">
+          <span className="text-xs">drag unwanted files to trash. let go of what doesn't serve you.</span>
+        </div>
       </div>
 
       {/* Files */}
@@ -509,40 +1057,101 @@ const DesktopScreen = ({ onComplete }: { onComplete: () => void }) => {
             dragMomentum={false}
             dragConstraints={{ left: 0, top: 0, right: window.innerWidth - 100, bottom: window.innerHeight - 100 }}
             onDragEnd={(_, info) => handleDragEnd(file, info)}
-            initial={{ x: file.x, y: file.y }}
+            initial={{ x: file.x, y: file.y, opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
             className="absolute flex flex-col items-center cursor-grab active:cursor-grabbing w-24 group z-20"
           >
-            <FileText className="w-10 h-10 mb-1 group-hover:scale-110 transition-transform" strokeWidth={1} />
-            <span className="text-xs text-center break-all">{file.name}</span>
+            <FileText
+              className={`w-10 h-10 mb-1 group-hover:scale-110 transition-transform ${
+                file.type === "bad" ? "text-[red]" : "text-black"
+              }`}
+              strokeWidth={1}
+            />
+            <span className={`text-xs text-center break-all ${
+              file.type === "bad" ? "text-[red]" : "text-black"
+            }`}>{file.name}</span>
           </motion.div>
         ))}
       </div>
 
       {/* Trash Bin */}
-      <div 
+      <motion.div
         ref={trashRef}
-        className="absolute bottom-8 right-8 flex flex-col items-center z-10"
+        className="absolute bottom-8 left-8 flex flex-col items-center z-10"
+        animate={{
+          scale: badFilesLeft > 0 && badFilesLeft < 7 ? [1, 1.1, 1] : 1
+        }}
+        transition={{ duration: 0.5, repeat: badFilesLeft > 0 ? Infinity : 0 }}
       >
         <Trash2 className="w-16 h-16 mb-2" strokeWidth={1} />
         <span>trash</span>
-      </div>
+      </motion.div>
 
-      {/* Continue Button */}
-      {badFilesLeft === 0 && (
-        <div className="absolute bottom-8 left-8 z-30">
-          <Button onClick={onComplete} className="animate-pulse">
-            all corrupted files removed. continue →
-          </Button>
-        </div>
-      )}
+      {/* Continue Modal - SIMPLE VERSION */}
+      <AnimatePresence>
+        {showModal && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9999]"
+            style={{
+              backgroundColor: 'white',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}
+          >
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ delay: 0.2 }}
+              style={{
+                border: '4px solid red',
+                backgroundColor: 'white',
+                padding: '3rem',
+                maxWidth: '600px',
+                margin: '0 1rem',
+                textAlign: 'center'
+              }}
+            >
+              <h2 style={{ fontSize: '2rem', marginBottom: '2rem', fontWeight: 'bold' }}>
+                ALL CORRUPTED FILES REMOVED
+              </h2>
+              <p style={{ fontSize: '1.2rem', marginBottom: '1.5rem' }}>
+                the bad stuff is gone. the good stuff? that's protected. that stays with you.
+              </p>
+              <p style={{ fontSize: '1rem', marginBottom: '2rem', opacity: 0.7 }}>
+                love, growth, resilience, wisdom, courage - these cannot be uninstalled.
+              </p>
+              <button
+                onClick={onComplete}
+                style={{
+                  border: '1px solid red',
+                  padding: '0.75rem 2rem',
+                  backgroundColor: 'red',
+                  color: 'white',
+                  fontSize: '1.2rem',
+                  cursor: 'pointer',
+                  fontFamily: 'Times New Roman, serif',
+                  fontStyle: 'italic'
+                }}
+              >
+                [continue →]
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Error Dialog */}
       {error && (
-        <div className="fixed inset-0 bg-black/5 z-50 flex items-center justify-center pointer-events-auto">
-          <ErrorDialog 
-            title={error.title} 
-            message={error.message} 
-            onOk={() => setError(null)} 
+        <div className="fixed inset-0 bg-black/10 z-[150] flex items-center justify-center pointer-events-auto">
+          <ErrorDialog
+            title={error.title}
+            message={error.message}
+            onOk={() => setError(null)}
           />
         </div>
       )}
@@ -553,10 +1162,36 @@ const DesktopScreen = ({ onComplete }: { onComplete: () => void }) => {
 
 // --- Main Application ---
 
+// Progress bar component
+const GlobalProgressBar = ({ currentStep, totalSteps }: { currentStep: number, totalSteps: number }) => {
+  const progress = (currentStep / totalSteps) * 100;
+
+  return (
+    <div className="fixed bottom-0 left-0 w-full bg-white border-t border-[red] p-2 z-[300]">
+      <div className="max-w-4xl mx-auto">
+        <div className="flex justify-between text-xs mb-1">
+          <span>uninstalling 2025.exe...</span>
+          <span>{currentStep} / {totalSteps} complete ({Math.round(progress)}%)</span>
+        </div>
+        <div className="w-full h-3 border border-[red]">
+          <motion.div
+            className="h-full bg-[red]"
+            initial={{ width: 0 }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.5 }}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
 export default function UninstallWizard() {
   const [screen, setScreen] = useState<Screen>("INTRO");
   const [userName, setUserName] = useState("");
   const [terminalOpen, setTerminalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingMessage, setLoadingMessage] = useState("loading...");
 
   // Key listener for Terminal
   useEffect(() => {
@@ -569,73 +1204,136 @@ export default function UninstallWizard() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
+  // Helper to transition with loading screen
+  const transitionToScreen = (nextScreen: Screen, message: string = "loading...") => {
+    setIsLoading(true);
+    setLoadingMessage(message);
+    setTimeout(() => {
+      setScreen(nextScreen);
+      setIsLoading(false);
+    }, 2000);
+  };
+
+  // Get current step number for progress bar
+  const getCurrentStep = (): number => {
+    const stepMap: Record<Screen, number> = {
+      "INTRO": 0,
+      "PREPARING": 1,
+      "USER_ID": 2,
+      "WIZARD_A": 3,
+      "WIZARD_B": 4,
+      "WIZARD_C": 5,
+      "WIZARD_D": 6,
+      "WIZARD_E": 7,
+      "WIZARD_F": 8,
+      "WIZARD_G": 9,
+      "WIZARD_H": 10,
+      "WIZARD_I": 11,
+      "DESKTOP_INTRO": 12,
+      "WIZARD_J_DESKTOP": 13,
+      "WIZARD_K": 14,
+      "WIZARD_L": 15,
+      "WIZARD_M": 16,
+      "TRANSITION": 17,
+      "INSTALLING_2026": 18,
+      "INTENTION": 19,
+      "FINAL": 20
+    };
+    return stepMap[screen] || 0;
+  };
+
+  const totalSteps = 20;
+
   const renderContent = () => {
     switch(screen) {
       case "INTRO": return <IntroScreen onStart={() => setScreen("PREPARING")} />;
-      case "PREPARING": return <PreparingScreen onComplete={() => setScreen("USER_ID")} />;
-      case "USER_ID": return <UserIdScreen onComplete={() => setScreen("WIZARD_A")} userName={userName} setUserName={setUserName} />;
+      case "PREPARING": return <PreparingScreen onComplete={() => transitionToScreen("USER_ID", "initializing uninstall wizard...")} />;
+      case "USER_ID": return <UserIdScreen onComplete={() => transitionToScreen("WIZARD_A", `hello ${userName}, loading your data...`)} userName={userName} setUserName={setUserName} />;
+
+      case "WIZARD_A": return <WizardStep step="step 1 of 14" title="removing temporary files..." content={`${userName}, temporary files served their purpose in this version. sometimes you delete to make space for an upgrade. sometimes you delete to make space for something new. but holding on to them slows the system and processes down. clearing space for what's next...`} onNext={() => setScreen("WIZARD_B")} useTyping={true} userName={userName} />;
+
+      case "WIZARD_B": return <WizardStep step="step 2 of 14" title="analyzing installed programs..." content="you learned how humans work better this year. including yourself. especially yourself. you're not the same person who started this year. AFFIRM!!!!!" onNext={() => setScreen("WIZARD_C")} useTyping={true} userName={userName} />;
+
+      case "WIZARD_C": return <WizardStep step="step 3 of 14" title="scanning for corrupted narratives..." content="you know yourself best. trust your pattern recognition. you're allowed to trust yourself. you're allowed to believe what you see. TRUST YOURSELF." onNext={() => setScreen("WIZARD_D")} useTyping={true} userName={userName} />;
       
-      case "WIZARD_A": return <WizardStep step="step 1 of 14" title="removing temporary files..." content="temporary files served their purpose in this version. sometimes you delete to make space for an upgrade. sometimes you delete to make space for something new. but holding on to them slows the system and processes down. clearing space for what's next..." onNext={() => setScreen("WIZARD_B")} />;
-      
-      case "WIZARD_B": return <WizardStep step="step 2 of 14" title="analyzing installed programs..." content="you learned how humans work better this year. including yourself. especially yourself. that alone is worth any heartbreak. you're not the same person who started this year. AFFIRM!!!!!" onNext={() => setScreen("WIZARD_C")} />;
-      
-      case "WIZARD_C": return <WizardStep step="step 3 of 14" title="scanning for corrupted narratives..." content="you know yourself best. trust your pattern recognition. you're allowed to trust yourself. you're allowed to believe what you see. TRUST YOURSELF." onNext={() => setScreen("WIZARD_D")} />;
-      
-      case "WIZARD_D": 
-        return <WizardStep 
-          step="step 4 of 14" 
-          title="ERROR: cannot delete hope.exe" 
+      case "WIZARD_D":
+        return <WizardStep
+          step="step 4 of 14"
+          title="ERROR: cannot delete hope.exe"
           showError={true}
           errorMessage="cannot delete hope.exe - file is protected"
           content={
             <div className="bg-red-50 p-6 border border-[red]">
-               <h3 className="font-bold mb-4">God's Not Finished</h3>
                <p>some things refuse to be uninstalled. there are so many tomorrows you haven't seen yet. so many people you haven't met. so many versions of yourself you haven't become.</p>
             </div>
           }
-          onNext={() => setScreen("WIZARD_E")} 
+          onNext={() => setScreen("WIZARD_E")}
+          userName={userName}
         />;
 
-      case "WIZARD_E": return <WizardStep step="step 5 of 14" title="archiving lessons learned..." content="THE DAY YOU PLANT THE SEED IS NOT THE DAY YOU EAT THE FRUIT. don't forget everything you planted this year. you watered things in the dark. you trusted when you couldn't see. the garden remembers. the universe is keeping score. even the smallest seeds bloom one day. your seeds are still growing even if you can't see them yet KEEP PLANTING KEEP TRUSTING KEEP GOINGkjhsdfgjkhsdfg :-)" onNext={() => setScreen("WIZARD_F")} />;
+      case "WIZARD_E": return <WizardStep step="step 5 of 14" title="archiving lessons learned..." content={`THE DAY YOU PLANT THE SEED IS NOT THE DAY YOU EAT THE FRUIT. ${userName}, don't forget everything you planted this year. you watered things in the dark. you trusted when you couldn't see. the garden remembers. the universe is keeping score. even the smallest seeds bloom one day. your seeds are still growing even if you can't see them yet KEEP PLANTING KEEP TRUSTING KEEP GOINGkjhsdfgjkhsdfg :-)`} onNext={() => setScreen("WIZARD_F")} userName={userName} />;
 
-      case "WIZARD_F": return <WizardStep step="step 6 of 14" title="removing broken shortcuts..." content="heartbreak redirected you. rejection protected you. stop trying to get back on the path. there is no path. you can always change direction. you're not stuck - you're just scared. you're not a tree - MOVE!!!! pivot. start over. for the love of God, don't be a coward. there are no shortcuts, darling." onNext={() => setScreen("WIZARD_G")} />;
-      
-      case "WIZARD_G": return <WizardStep step="step 7 of 14" title="WARNING: patience.exe is still processing..." content="not everything blooms on your timeline and that's okay. you're allowed to want things before they arrive. desire is life-affirming. wanting is not weakness. you don't have to be patient perfectly. you just have to keep going. God's Not Finished :-)" onNext={() => setScreen("WIZARD_H")} />;
+      case "WIZARD_F": return <WizardStep step="step 6 of 14" title="removing broken shortcuts..." content="heartbreak redirected you. rejection protected you. stop trying to get back on the path. there is no path. you can always change direction. you're not stuck - you're just scared. you're not a tree - MOVE!!!! pivot. start over. for the love of God, don't be a coward. there are no shortcuts, darling." onNext={() => setScreen("WIZARD_G")} userName={userName} />;
 
-      case "WIZARD_H": return <WizardStep step="step 8 of 14" title="scanning for corrupted files..." content="you speedran through love and heartbreak and growth and that's GOOD actually. you didn't run. you stayed present, open, vulnerable, and earnest even when it hurt. tomorrow is a beautiful thing. LFG :-)" onNext={() => setScreen("WIZARD_I")} />;
+      case "WIZARD_G": return <WizardStep step="step 7 of 14" title="WARNING: patience.exe is still processing..." content="not everything blooms on your timeline and that's okay. you're allowed to want things before they arrive. desire is life-affirming. you don't have to be patient perfectly. you just have to keep going. God's Not Finished." onNext={() => setScreen("WIZARD_H")} userName={userName} />;
 
-      case "WIZARD_I": return <WizardStep step="step 9 of 14" title="defragmenting memories..." content="you're not who you were in january. you're not who you'll be in december 2026. you're always becoming. you're always shedding skin. you're a different person every 4 weeks and that's the whole point. shedding is never comfortable. growth is supposed to feel like this." onNext={() => setScreen("WIZARD_J_DESKTOP")} />;
+      case "WIZARD_H": return <WizardStep step="step 8 of 14" title="removing attachment to timelines and outcomes..." content={`${userName}, you speedran through love and heartbreak and growth and that's GOOD actually. you didn't run. you stayed present, open, vulnerable, and earnest even when it hurt. tomorrow is a beautiful thing. LFG :-)`} onNext={() => setScreen("WIZARD_I")} userName={userName} />;
 
-      case "WIZARD_J_DESKTOP": return <DesktopScreen onComplete={() => setScreen("WIZARD_K")} />;
+      case "WIZARD_I": return <WizardStep step="step 9 of 14" title="reorganizing fragmented experiences..." content="you're not who you were in january. you're not who you'll be in december 2026. you're always becoming. you're always shedding skin. you're a different person every 4 weeks and that's the whole point. shedding is never comfortable. growth is supposed to feel like this." onNext={() => setScreen("DESKTOP_INTRO")} userName={userName} />;
+
+      case "DESKTOP_INTRO": return <DesktopIntroScreen onContinue={() => setScreen("WIZARD_J_DESKTOP")} />;
+
+      case "WIZARD_J_DESKTOP": return <DesktopScreen onComplete={() => transitionToScreen("WIZARD_K", "cleaning up system files...")} userName={userName} />;
 
       case "WIZARD_K": return <WizardStep step="step 11 of 14" title="compressing 2025..." content={
         <div className="flex flex-col gap-8 text-center">
            <p>save these lessons?</p>
            <div className="flex gap-4 justify-center">
-             <Button onClick={() => { alert("good. you'll need them later."); setScreen("WIZARD_L"); }}>yes</Button>
-             <Button onClick={() => { alert("good. you'll need them later."); setScreen("WIZARD_L"); }}>always</Button>
-             <Button onClick={() => { alert("good. you'll need them later."); setScreen("WIZARD_L"); }}>already saved in my bones</Button>
+             <Button onClick={() => { alert("good. you'll need them later."); transitionToScreen("TRANSITION", "finalizing 2025 archive..."); }}>yes</Button>
+             <Button onClick={() => { alert("good. you'll need them later."); transitionToScreen("TRANSITION", "finalizing 2025 archive..."); }}>always</Button>
+             <Button onClick={() => { alert("good. you'll need them later."); transitionToScreen("TRANSITION", "finalizing 2025 archive..."); }}>already saved in my bones</Button>
            </div>
         </div>
-      } onNext={() => setScreen("WIZARD_L")} />;
-
-      case "WIZARD_L": return <WizardStep step="step 12 of 14" title="ERROR: cannot install cynicism.exe" content="you could close off. you could decide love isn't worth it. you could build walls. but you won't. because you're not a coward. LFG :-)" onNext={() => setScreen("WIZARD_M")} />;
-
-      case "WIZARD_M": return <CascadingErrorsScreen onComplete={() => setScreen("TRANSITION")} />;
+      } onNext={() => transitionToScreen("TRANSITION", "finalizing 2025 archive...")} userName={userName} />;
 
       case "TRANSITION":
         return (
           <div className="flex flex-col items-center justify-center h-screen text-center px-4">
-            <h2 className="text-2xl mb-4">2025.exe successfully archived.</h2>
-            <p className="mb-8">preparing to install 2026.exe...</p>
-            <p className="text-xl italic">do your part. release the rest.</p>
-            <div className="mt-8">
-              <Button onClick={() => setScreen("INSTALLING_2026")}>proceed</Button>
-            </div>
+            <motion.h2
+              className="text-2xl mb-4"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+            >
+              2025.exe successfully archived.
+            </motion.h2>
+            <motion.p
+              className="mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.5 }}
+            >
+              preparing to install 2026.exe...
+            </motion.p>
+            <motion.p
+              className="text-xl italic mb-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1 }}
+            >
+              do your part. release the rest.
+            </motion.p>
+            <motion.div
+              className="mt-8"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.5 }}
+            >
+              <Button onClick={() => transitionToScreen("INSTALLING_2026", "preparing installation...")}>proceed</Button>
+            </motion.div>
           </div>
         );
 
-      case "INSTALLING_2026": return <Install2026Screen onComplete={() => setScreen("INTENTION")} />;
+      case "INSTALLING_2026": return <Install2026Screen onComplete={() => transitionToScreen("INTENTION", "finalizing setup...")} />;
 
       case "INTENTION": return <IntentionScreen onComplete={() => setScreen("FINAL")} />;
 
@@ -646,10 +1344,40 @@ export default function UninstallWizard() {
   };
 
   return (
-    <div className="min-h-screen bg-white text-[red] font-serif overflow-hidden relative selection:bg-[red] selection:text-white">
+    <div className="min-h-screen bg-white text-[red] font-serif overflow-hidden relative selection:bg-[red] selection:text-white pb-16">
       <CRTOverlay />
-      {renderContent()}
+
+
+      {/* Terminal Toggle Button */}
+      <motion.button
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        onClick={() => setTerminalOpen(!terminalOpen)}
+        className="fixed bottom-4 right-4 z-[200] border border-[red] px-3 py-1 bg-white hover:bg-[red] hover:text-white transition-colors text-xs"
+        title="Press ` to toggle terminal"
+      >
+        [terminal]
+      </motion.button>
+
+      <AnimatePresence mode="wait">
+        {isLoading ? (
+          <MatrixRain key="loading" message={loadingMessage} />
+        ) : (
+          <motion.div
+            key={screen}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            {renderContent()}
+          </motion.div>
+        )}
+      </AnimatePresence>
       <Terminal isOpen={terminalOpen} onClose={() => setTerminalOpen(false)} />
+      {screen !== "INTRO" && screen !== "FINAL" && (
+        <GlobalProgressBar currentStep={getCurrentStep()} totalSteps={totalSteps} />
+      )}
     </div>
   );
 }
