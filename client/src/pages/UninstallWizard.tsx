@@ -1254,7 +1254,7 @@ export default function UninstallWizard() {
 
       case "WIZARD_B": return <WizardStep step="step 2 of 14" title="analyzing installed programs..." content="you learned how humans work better this year. including yourself. especially yourself. you're not the same person who started this year. AFFIRM!!!!!" onNext={() => setScreen("WIZARD_C")} useTyping={true} userName={userName} />;
 
-      case "WIZARD_C": return <WizardStep step="step 3 of 14" title="scanning for corrupted narratives..." content="you know yourself best. trust your pattern recognition. you're allowed to trust yourself. you're allowed to believe what you see. TRUST YOURSELF." onNext={() => setScreen("WIZARD_D")} useTyping={true} userName={userName} />;
+      case "WIZARD_C": return <WizardStep step="step 3 of 14" title="scanning for corrupted narratives..." content="whose story are you living? theirs or yours? you know yourself best. TRUST YOURSELF." onNext={() => setScreen("WIZARD_D")} useTyping={true} userName={userName} />;
       
       case "WIZARD_D":
         return <WizardStep
