@@ -1271,7 +1271,7 @@ export default function UninstallWizard() {
           userName={userName}
         />;
 
-      case "WIZARD_E": return <WizardStep step="step 5 of 14" title="archiving lessons learned..." content={`THE DAY YOU PLANT THE SEED IS NOT THE DAY YOU EAT THE FRUIT. ${userName}, don't forget everything you planted this year. you watered things in the dark. you trusted when you couldn't see. the garden remembers. the universe is keeping score. even the smallest seeds bloom one day. your seeds are still growing even if you can't see them yet KEEP PLANTING KEEP TRUSTING KEEP GOINGkjhsdfgjkhsdfg :-)`} onNext={() => setScreen("WIZARD_F")} userName={userName} />;
+      case "WIZARD_E": return <WizardStep step="step 5 of 14" title="archiving lessons learned..." content={`THE DAY YOU PLANT THE SEED IS NOT THE DAY YOU EAT THE FRUIT. ${userName}, don't forget everything you planted this year. you watered things in the dark. the garden remembers. the universe is keeping score. even the smallest seeds bloom one day. your seeds are still growing even if you can't see them yet KEEP PLANTING KEEP TRUSTING KEEP GOINGkjhsdfgjkhsdfg :-)`} onNext={() => setScreen("WIZARD_F")} userName={userName} />;
 
       case "WIZARD_F": return <WizardStep step="step 6 of 14" title="removing broken shortcuts..." content="rejection protected you. heartbreak redirected you. stop trying to get back on the path. there is no path. you can always change direction. you're not stuck - you're just scared. you're not a tree - MOVE!!!! pivot. start over. and for the love of God, don't be a coward. there are no shortcuts, darling." onNext={() => setScreen("WIZARD_G")} userName={userName} />;
 
